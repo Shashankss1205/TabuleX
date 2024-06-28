@@ -4,18 +4,23 @@ from dotenv import load_dotenv
 from flask_cors import CORS
 import os
 import re
+import sys
 import sqlite3
 import csv
+import numpy as np
 import pandas as pd
+# import matplotlib.pyplot as plt
 import google.generativeai as genai
 from PIL import Image
+# import cv2
 from io import BytesIO
 import requests
+import subprocess
 # from userdata import HUGGINGFACE_API_KEY
 # from userdata import GOOGLE_API_KEY
 
 load_dotenv()
-HUGGINGFACE_API_KEY = os.getenv('HUGGINGFACE_API_KEY')
+# HUGGINGFACE_API_KEY = os.getenv('HUGGINGFACE_API_KEY')
 GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
 
 
@@ -27,9 +32,9 @@ CORS(app)
 db_name = "mydatabase.db"
 history = ['Good tabular data analysis agent']
 
-val = f"Bearer {HUGGINGFACE_API_KEY}"
-API_URL = "https://api-inference.huggingface.co/models/codenamewei/speech-to-text"
-headers = {"Authorization": val}
+# val = f"Bearer {HUGGINGFACE_API_KEY}"
+# API_URL = "https://api-inference.huggingface.co/models/codenamewei/speech-to-text"
+# headers = {"Authorization": val}
 
 
 def combo():
@@ -69,6 +74,19 @@ def combo():
 def collector(chat):
     history.insert(0, chat)
 
+def extract_code_block(text):
+    if text.find("```python") | text.find("```Python") | text.find("```PYTHON"):
+        start =1
+    if start == -1:
+        end = text.find("```", start + 3)
+        if end == -1:
+            return None
+        return text[start + 3:end].strip()
+    end = text.find("```", start + 3)
+    if end == -1:
+        return None
+    return text[start + 9:end].strip()
+
 def chatbot(input):
     if input:
         table_col_combo = combo()
@@ -78,7 +96,7 @@ def chatbot(input):
         model = genai.GenerativeModel('gemini-pro')
 
         # prompt = "Write a story about a magic backpack."
-        prompt = f"Write an SQLite command for {input}. Pre exisiting tables and their columns are {table_col_combo}. Pre-existing chats are {history[0]}. Dont make random columns on your own and try to use columns with highest co-relation when asked to alter something"
+        prompt = f"Write an SQLite command for {input}. Pre exisiting tables and their columns are {table_col_combo}. Pre-existing chats are {history[0]}. Dont make random columns on your own and try to use columns with highest co-relation when asked to alter something, Do not forget to put column names in double quotes if the column has 2 words in it."
         
         print(f"Write an SQLite command to {input} if the table and their columns are {table_col_combo}  Pre-existing chats are {history[0]}.")
         response = model.generate_content(prompt)
@@ -94,6 +112,29 @@ def chatbot(input):
             response = execute_sql(reply)
             responses.append(response)            
         return responses
+
+def graphplot(input):
+    if (input):
+        table_col_combo = combo()
+        
+        genai.configure(api_key=GOOGLE_API_KEY)
+
+        model = genai.GenerativeModel('gemini-pro')
+
+        # prompt = "Write a story about a magic backpack."
+        prompt = f"Write a PYTHON command for {input} and dataframe is named 'output.csv'. Pre exisiting tables and their columns are {table_col_combo}. Pre-existing chats are {history[0]}. Dont make random columns on your own and try to use columns with highest co-relation when asked to alter something, Do not forget to put column names in double quotes if the column has 2 words in it. save the image plot as 'static/graph.png'"
+        
+        print(f"Write a PYTHON command to {input} if the table and their columns are {table_col_combo}  Pre-existing chats are {history[0]}.")
+        response = model.generate_content(prompt)
+        reply = response.text
+        print(reply)
+        if not reply.startswith('import'):
+            reply = extract_code_block(reply)
+
+        subproc(reply)
+    
+        return reply
+
 
 
 def get_db_connection():      # Function to establish a database connection
@@ -133,6 +174,13 @@ def execute_sql(sql_command):
 def index():
     return render_template('index.html')
 
+@app.route("/graphy")
+def gallery():
+    return render_template('graphy.html')
+
+@app.route("/about")
+def about():
+    return render_template('about.html')
 
 @app.route("/get", methods=["GET", "POST"])
 def chat():
@@ -143,6 +191,15 @@ def chat():
     print(type(responses))
     return responses
 
+
+@app.route("/graphy", methods=["POST"])
+def graphy():
+    input = request.form["msg"]
+    print("Input: " + input)
+    responses = graphplot(input)
+    print(responses)
+    print(type(responses))
+    return responses
 
 # @app.route("/audio", methods=["POST"])
 # def query():
@@ -156,7 +213,59 @@ def chat():
 #     else:
 #         return "Error processing audio", 500
 
-    
+
+
+@app.route("/listTable", methods=["GET"])
+def listingTable():
+    # 1. Connect to the SQLite database
+    conn = sqlite3.connect(db_name)
+    # 2. Create a cursor object to execute SQL queries
+    cursor = conn.cursor()
+    # 3. Query the SQLite database to fetch all table names
+    cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
+    # 4. Fetch the table names
+    table_names = cursor.fetchall()
+    print(table_names)
+    cursor.close()
+    conn.close()
+    return table_names
+
+@app.route('/downloadTable', methods=['POST'])
+def download_table():
+    data = request.get_json()
+    table_name = data.get('tableName')
+
+    # Call your Python function with table_name as input
+    # Example: Replace this with your actual function call
+    result = process_table_download(table_name)
+
+    # Return response if needed
+    return jsonify({'message': 'Table download initiated.', 'result': result}), 200
+
+def process_table_download(table_name):
+    # Connect to the SQLite database
+    conn = sqlite3.connect('mydatabase.db')
+
+    # SQL query to fetch the table data
+    query = "SELECT * FROM " + table_name
+
+    # Use pandas to read the SQL query results into a DataFrame
+    df = pd.read_sql_query(query, conn)
+
+    # Write the DataFrame to a CSV file
+    df.to_csv('output.csv', index=False)
+
+    # Close the database connection
+    conn.close()
+
+    print("Table data has been written to output.csv")
+
+    print(f'Downloading table: {table_name}')
+    # Implement your logic here (e.g., download the table)
+
+    return {'status': 'success'}
+
+
 
 @app.route('/addimg', methods=['POST'])
 def upload():
@@ -167,9 +276,16 @@ def upload():
     if file.filename == '':
         return 'No selected file'
     image = Image.open(BytesIO(file.read()))
+    # image = cv2.imdecode(np.frombuffer(file.read(), np.uint8), cv2.IMREAD_COLOR)
+    # Display the image
+    # cv2.imshow("My Image", image)
+
+    # Wait for a key press to close the window (optional)
+    # cv2.waitKey(0)
     # from userdata import GOOGLE_API_KEY
     genai.configure(api_key=GOOGLE_API_KEY)
     imgmodel = genai.GenerativeModel('gemini-pro-vision')
+    print(imgmodel)
     print(f"Write an SQLite command to add the table heads along with the input data present in the image. Dont make random columns on your own. You are warned : Never compromise the SQL syntax according to the input")
     response = imgmodel.generate_content([f"Write an SQLite command in code blocks like ```sql ........ ``` to add the table heads along with the input data present in the image. Dont make random columns on your own. Dont give table names from the list : {table_col_combo}. You are warned : Never compromise the SQL syntax according to the input", image], stream=True)
     response.resolve()
@@ -254,9 +370,28 @@ def show_file():
         table_data = [list(t) for t in table_data]
         data[table] = table_data
     conn.close()
-    print(data)
+    # print(data)
     print(type(data))
     return jsonify({'output_value': data})
+
+def subproc(new_file_content):
+
+    with open('dynamic_script.py', 'w') as file:
+        file.write(new_file_content)
+
+    print("dynamic_script.py created.")
+    # activate_script = os.path.join('myenv', 'Scripts', 'activate')
+    # activate_cmd = f'call "{activate_script}"'
+    # subprocess.run(activate_cmd, shell=True, check=True)
+
+    # Run dynamic_script.py using the Python interpreter that has pandas installed
+    # python_path = sys.executable
+    result = subprocess.run(['python', 'dynamic_script.py'], capture_output=True, text=True)
+    # Print the output
+    print(result.stdout)
+    print(result.stderr)
+    # return 1
+# subproc()
 
 if __name__ == '__main__':
     app.run(debug=True)

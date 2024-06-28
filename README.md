@@ -1,5 +1,3 @@
-# TabuleX
-
 ## Inspiration
 Tabluar data analysis is a crucial need in various time when we need to deal with a large amount of data.  I have built the tool due to professional needs, personal interest in data analysis, recognizing market demand, desire for innovation, educational purposes, problem-solving drive, efficiency concerns.
 
@@ -32,3 +30,12 @@ Integration of Gemini API with SQL database. Also, there are no previous solutio
 1. My future endeavors include graphical analysis of tabular data as a feature.
 2. I also aim to integrate voice recognition along with the other features
 3. We can provide table schema as input so that co-relation between tables can be handled more efficiently.
+
+
+# Setting up locally
+1. Install python (skip, if already present)
+2. For Windows: 
+    myenv\Scripts\activate
+   For Linux/Mac:
+    source myenv/bin/activate
+3. pip install -r requirements.txt
