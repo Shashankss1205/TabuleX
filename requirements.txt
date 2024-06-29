@@ -11,10 +11,13 @@ packaging==24.0
 python-dotenv==1.0.1
 werkzeug==3.0.2
 zipp==3.18.1
-
+Pillow==10.3.0
+seaborn
+# plotly
 # flask==2.2.2
 # Werkzeug==2.3
 # requests==2.31.0
 pandas
-Pillow==3.4.0
+matplotlib==3.9.0
+# Pillow==3.4.0  #Resolve conflictt with this old one
 google-generativeai
