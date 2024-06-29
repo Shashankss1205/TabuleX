@@ -192,6 +192,18 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+// ***************************************QUESTIONS HINT SECTION****************************************
+function copyToClipboard(text) {
+	const regex = /^\d+/;
+    if (regex.test(text)) {
+        text = text.substring(3);
+    }
+	navigator.clipboard.writeText(text).then(function() {
+		alert('Copied to clipboard: ' + text);
+	}, function(err) {
+		console.error('Could not copy text: ', err);
+	});
+}
 
 $(document).ready(function () {
 	$("#messageArea").on("submit", function (event) {
@@ -201,7 +213,9 @@ $(document).ready(function () {
 		const str_time = hour + ":" + minute;
 		var rawText = $("#text").val();
 
-		var userHtml = '<div class="d-flex justify-content-end mb-4"><div class="msg_cotainer_send">' + rawText + '<span class="msg_time_send">' + str_time + '</span></div><div class="img_cont_msg"><img src="https://i.ibb.co/d5b84Xw/Untitled-design.png" class="rounded-circle user_img_msg"></div></div>';
+		var userHtml = '<div class="d-flex justify-content-end mb-4"><div class="msg_cotainer_send">' + rawText + 
+		'<span class="msg_time_send">' + str_time + 
+		'</span></div><div class="img_cont_msg"><img src="../static/user_img.png" class="rounded-circle user_img_msg"></div></div>';
 
 		$("#text").val("");
 		$("#messageFormeight").append(userHtml);
@@ -400,7 +414,7 @@ function populateDownloadModal(data) {
 
 function updateGraphImage() {
 	var imgElement = document.getElementById('graphImage');
-	console.log(imgElement)
+	// console.log(imgElement)
 	var currentSrc = imgElement.src;
 
 	// Append a timestamp query parameter to ensure cache busting
@@ -413,7 +427,8 @@ function updateGraphImage() {
 function pollForChanges() {
 setInterval(function () {
 	updateGraphImage();
-}, 1000); // 5000 milliseconds = 5 seconds
+	// console.log(i++)
+}, 5000); // 5000 milliseconds = 5 seconds
 }
 
 $(document).ready(function () {

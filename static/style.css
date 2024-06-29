@@ -1,6 +1,7 @@
 body,html{
 	/* height: 100%; */
 	margin: 0;
+	background-color: FFF9D0;
 }
 
 .btn-warning{
@@ -10,25 +11,26 @@ body,html{
 	line-height: 1.5;
 	border-radius: 3px;
 	color: #fff;
-	background-color: #ffc100;
+	/* background-color: #ffc100; */
+	background-color: FF9EAA;
 	border: 0;
 	transition: 0.2s;
 	overflow: hidden;
   }
   
   
-  .btn-warning input[type = "file"]{
+.btn-warning input[type = "file"]{
 	cursor: pointer;
 	position: absolute;
 	left: 0%;
 	top: 0%;
 	transform: scale(3);
 	opacity: 0;
-  }
+}
   
-  .btn-warning:hover{
+.btn-warning:hover{
 	background-color: #d9a400;
-  }
+}
 .main_container{
 	display: flex;
 }
@@ -167,11 +169,13 @@ tr:hover {
 /* ***********************************Main body************************************************* */
 
 .card {
-	width: 100%;
+	width: 98%;
 	height: 100%;
 	padding: 20px;
 	margin-bottom: 5%;
+	margin-left: 2%;
 	border: 1px solid #ccc;
+	background-color: #CAF4FF;
 }
 
 .msg_card_body{
@@ -239,6 +243,7 @@ tr:hover {
 .img_cont_msg{
 	height: 40px;
 	width: 40px;
+	scale: 1.1;
 }
 .online_icon{
 	position: absolute;
@@ -271,7 +276,7 @@ tr:hover {
 	margin-bottom: auto;
 	margin-left: 10px;
 	border-radius: 25px;
-	background-color: rgb(82, 172, 255);
+	background-color: FF9EAA;
 	padding-inline : 10px;
 	position: relative;
 }
@@ -290,7 +295,7 @@ tr:hover {
 	margin-bottom: auto;
 	margin-right: 10px;
 	border-radius: 25px;
-	background-color: #58cc71;
+	background-color: 5AB2FF;
 	padding: 10px;
 	position: relative;
 }
@@ -363,15 +368,25 @@ tr:hover {
     border-bottom: 1px solid #dddddd; /* Example border style */
     padding: 10px 0;
 }
+.eachitem{
+	/* background-color: FFF9D0; */
+	font-weight: 500;
+}
 
 
 .faq-section {
     flex: 1; /* Fill remaining space */
     overflow-y: auto; /* Add vertical scroll if needed */
     padding: 15px;
-    background-color: #f8f9fa; /* Example background color */
+    background-color: #CAF4FF; /* Example background color */
     border-radius: 5px;
 	height: 100%;
+}
+.copy-btn {
+	border: none;
+	background: none;
+	cursor: pointer;
+	color: #007bff;
 }
 
 @media (max-width: 1000px) {

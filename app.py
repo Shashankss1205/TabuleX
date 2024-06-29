@@ -9,7 +9,6 @@ import pandas as pd
 # import matplotlib.pyplot as plt
 import google.generativeai as genai
 from PIL import Image
-# import cv2
 from io import BytesIO
 import subprocess
 
@@ -22,41 +21,40 @@ CORS(app)
 db_name = "mydatabase.db"
 history = ['Good tabular data analysis agent']
 
-
 # **************************************Helper Functions*******************************************
 def combo():
-    # 1. Connect to the SQLite database
     conn = sqlite3.connect(db_name)
-    # 2. Create a cursor object to execute SQL queries
     cursor = conn.cursor()
-    # 3. Query the SQLite database to fetch all table names
     cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name != 'sqlite_sequence';")
-    # 4. Fetch the table names
     table_names = cursor.fetchall()
     table_col_combo = []
-    # 5. Iterate through the table names and fetch their column names
     for table_name in table_names:
-        table_name = table_name[0]  # Extract the table name from the result
-
-        # Query to fetch column names of the current table
+        table_name = table_name[0]
         query = f"PRAGMA table_info({table_name});"
         cursor.execute(query)
-
-        # Fetch the column names for the current table
         column_names = [row[1] for row in cursor.fetchall()]
-
-        # Print or use the table name and column names
-        print("Table:", table_name)
-        print("Columns:", column_names)
+        # print("Table:", table_name, "Columns:", column_names)
         combo = f"'{table_name}' has columns {column_names}"
-        print(combo)
+        # print(combo)
         table_col_combo.append(combo)
         
-    print(table_col_combo)
-    # 6. Close the cursor and the database connection
+    # print(table_col_combo)
     cursor.close()
     conn.close()
     return table_col_combo
+
+def question_generator():
+    table_col_combo= combo()
+    genai.configure(api_key=GOOGLE_API_KEY)
+    model = genai.GenerativeModel('gemini-pro')
+    prompt = f"Write 10-15 Natural language questions to ask related to the tables {table_col_combo}. Pre exisiting tables and their columns are {table_col_combo}.Dont make random columns on your own. Just write the lines no extra text"
+    response = model.generate_content(prompt)
+    reply = response.text
+    print(reply)
+    ques_list = [line.strip() for line in reply.strip().split('\n')]          
+    print(ques_list)
+    return ques_list
+items= question_generator()
 
 def collector(chat):
     history.insert(0, chat)
@@ -80,13 +78,11 @@ def chatbot(input):
         table_col_combo = combo()
         
         genai.configure(api_key=GOOGLE_API_KEY)
-
         model = genai.GenerativeModel('gemini-pro')
 
         # prompt = "Write a story about a magic backpack."
         prompt = f"Write an SQLite command for {input}. Pre exisiting tables and their columns are {table_col_combo}. Pre-existing chats are {history[0]}. Dont make random columns on your own and try to use columns with highest co-relation when asked to alter something, Do not forget to put column names in double quotes if the column has 2 words in it."
-        
-        print(f"Write an SQLite command to {input} if the table and their columns are {table_col_combo}  Pre-existing chats are {history[0]}.")
+        print(prompt)
         response = model.generate_content(prompt)
         reply = response.text
         print(reply)
@@ -124,26 +120,12 @@ def graphplot(input):
         return reply
 
 def process_table_download(table_name):
-    # Connect to the SQLite database
     conn = sqlite3.connect('mydatabase.db')
-
-    # SQL query to fetch the table data
     query = "SELECT * FROM " + table_name
-
-    # Use pandas to read the SQL query results into a DataFrame
     df = pd.read_sql_query(query, conn)
-
-    # Write the DataFrame to a CSV file
     df.to_csv('output.csv', index=False)
-
-    # Close the database connection
     conn.close()
-
     print("Table data has been written to output.csv")
-
-    print(f'Downloading table: {table_name}')
-    # Implement your logic here (e.g., download the table)
-
     return {'status': 'success'}
 
 def get_db_connection():
@@ -187,7 +169,7 @@ def subproc(new_file_content):
     # Run dynamic_script.py using the Python interpreter
     # python_path = sys.executable
     result = subprocess.run(['python3', 'dynamic_script.py'], capture_output=True, text=True)
-    result = subprocess.run(['python3', 'dynamic_script.py'], capture_output=True, text=True)
+    # result = subprocess.run(['python3', 'dynamic_script.py'], capture_output=True, text=True)
     # Print the output
     print(result.stdout)
     print(result.stderr)
@@ -197,7 +179,7 @@ def subproc(new_file_content):
 # **************************************Routes for Website*******************************************
 @app.route("/")
 def index():
-    return render_template('index.html')
+    return render_template('index.html', items=items)
 
 @app.route("/graphy")
 def graphPlot():
@@ -228,13 +210,9 @@ def graphy():
 
 @app.route("/listTable", methods=["GET"])
 def listingTable():
-    # 1. Connect to the SQLite database
     conn = sqlite3.connect(db_name)
-    # 2. Create a cursor object to execute SQL queries
     cursor = conn.cursor()
-    # 3. Query the SQLite database to fetch all table names
     cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name != 'sqlite_sequence';")
-    # 4. Fetch the table names
     table_names = cursor.fetchall()
     print(table_names)
     cursor.close()
@@ -253,9 +231,14 @@ def select_table():
     # Return response if needed
     return jsonify({'message': 'Table download initiated.', 'result': result}), 200
 
-@app.route('/downloadTable', methods=['POST'])
+@app.route('/downloadTable')
 def Download_CSV():
     path = "./output.csv"
+    return send_file(path, as_attachment=True)
+
+@app.route('/downloadGraph')
+def Download_Graph():
+    path = "./static/graph.png"
     return send_file(path, as_attachment=True)
 
 @app.route('/addimg', methods=['POST'])
@@ -301,6 +284,7 @@ def browse_file():
     connection = sqlite3.connect(db_name)
     df.to_sql(base_filename, connection, if_exists='replace', index=False)
     connection.close()
+    items= question_generator()
     return 'File uploaded successfully'
 
 @app.route('/show', methods=['POST'])
