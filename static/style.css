@@ -1,13 +1,8 @@
 body,html{
-	height: 100%;
+	/* height: 100%; */
 	margin: 0;
-	/* background: rgb(44, 47, 59); */
-   	/* background: -webkit-linear-gradient(to right, rgb(40, 59, 34), rgb(54, 60, 70), rgb(32, 32, 43)); */
-	/* background: linear-gradient(to right, rgb(38, 51, 61), rgb(50, 55, 65), rgb(33, 33, 78)); */
 }
-#changeCssButton{
-	background-color: transparent
-}
+
 .btn-warning{
 	position: relative;
 	padding: 11px 16px;
@@ -20,6 +15,7 @@ body,html{
 	transition: 0.2s;
 	overflow: hidden;
   }
+  
   
   .btn-warning input[type = "file"]{
 	cursor: pointer;
@@ -36,6 +32,7 @@ body,html{
 .main_container{
 	display: flex;
 }
+
 .breadcrumb_main{
 	padding-top: 10px;
 	padding-left: 10px;
@@ -47,18 +44,6 @@ body,html{
 .breadcrumb-item{
 	margin-top: 8;
 }
-.nav_app_image {
-    width: 40px;
-    height: 40px;
-    overflow: hidden; /* Clip the image within the border-radius */
-}
-
-.nav_app_image img {
-    width: 120%;
-    height: 120%;
-	margin-right: 10px;
-	/* padding-inline: 5%; */
-}
 
 .nav {
 	width: 20%;
@@ -66,47 +51,65 @@ body,html{
 	padding: 20px;
 	height: 80%
   }
-
-.sidenav {
-margin-top: 160px;
-height: 80%; /* Full height */
-width: 80px; /* Set the desired width */
-position: fixed; /* Fixed positioning to keep it in view */
-top: 0; /* Position at the top */
-left: 0; /* Position at the left */
-background-color: #ffffff; /* Background color of the navbar */
-color: #000000; /* Text color */
-padding: 20px;
+  nav .btn {
+    position: relative;
+    padding: 11px 16px;
+    font-size: 15px;
+    line-height: 1.5;
+    border-radius: 3px;
+    color: #000000;
+    background-color: transparent; /* No background initially */
+    border: none;
+    overflow: hidden;
+    transition: color 0.3s, background-color 0.3s;
+    text-decoration: none;
+    cursor: pointer;
 }
 
-.sidenav a{
-	font-size:xx-large;
-	padding: 10px;
+nav .btn::before,
+nav .btn::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #050633; /* Initial background color */
+    z-index: -1;
+    transition: transform 0.3s ease;
+    transform: scaleX(0); /* Initially hidden */
+    transform-origin: left;
+}
+
+nav .btn::after {
+    background-color: #00bcd4; /* Second color for gradient effect */
+    transform-origin: right;
+}
+
+nav .btn:hover::before {
+    transform: scaleX(1); /* Slide from left on hover */
+}
+
+nav .btn:hover::after {
+    transform: scaleX(1); /* Slide from right on hover */
 }
 /* Style for the navigation buttons */
 .nav-button {
-display: block;
-width: 100%;
-padding: 10px 0;
-text-align: center;
-background-color: #555; /* Button background color */
-color: #fff; /* Button text color */
-border: none;
-margin-bottom: 10px;
-cursor: pointer;
+	display: block;
+	width: 100%;
+	padding: 10px 0;
+	text-align: center;
+	background-color: #555; /* Button background color */
+	color: #000000; /* Button text color */
+	border: none;
+	margin-bottom: 10px;
+	cursor: pointer;
 }
-
+	
 .nav-button:hover {
 background-color: #777; /* Button background color on hover */
 }
 
-.card {
-  width: 95%;
-  height: 80%;
-  margin-left: 80px;
-  padding: 20px;
-  border: 1px solid #ccc;
-}
 table {
     border: 1px solid #000; /* Apply the border to the table element */
 }
@@ -118,9 +121,19 @@ th, td {
 tr:hover {
 	background-color: #f5f5f5; /* Optional: Highlight rows on hover */
 }
+
+/* ***********************************key Buttons************************************************* */
 .add_image{
 	position: absolute;
 	right:400;
+	top:20;
+	color: rgba(0, 0, 0, 0.8);
+	font-size: 15px;
+	font-weight: bolder;
+}
+.add_image2{
+	position: absolute;
+	right:610;
 	top:20;
 	color: rgba(0, 0, 0, 0.8);
 	font-size: 15px;
@@ -150,15 +163,17 @@ tr:hover {
 	font-weight: bolder;
 	height: 40;
 }
-.chat{
-	margin-top: auto;
-	margin-bottom: auto;
+
+/* ***********************************Main body************************************************* */
+
+.card {
+	width: 100%;
+	height: 100%;
+	padding: 20px;
+	margin-bottom: 5%;
+	border: 1px solid #ccc;
 }
-.contacts_body{
-	padding:  0.75rem 0 !important;
-	overflow-y: auto;
-	white-space: nowrap;
-}
+
 .msg_card_body{
 	overflow-y: auto;
 }
@@ -168,17 +183,9 @@ tr:hover {
 }
 .container{
 	align-content: center;
+	/* height: 100%; */
 }
-.search{
-	border-radius: 15px 0 0 15px !important;
-	background-color: rgba(0,0,0,0.3) !important;
-	border:0 !important;
-	color:rgb(0, 0, 0) !important;
-}
-.search:focus{
-	 box-shadow:none !important;
-   outline:0px !important;
-}
+
 .type_msg{
 	background-color: 60px !important; 
 	border:0 !important;
@@ -208,22 +215,7 @@ tr:hover {
 	color: white !important;
 	cursor: pointer;
 }
-.search_btn{
-	border-radius: 0 15px 15px 0 !important;
-	background-color: rgba(0,0,0,0.3) !important;
-	border:0 !important;
-	color: white !important;
-	cursor: pointer;
-}
-.contacts{
-	list-style: none;
-	padding: 0;
-}
-.contacts li{
-	width: 100% !important;
-	padding: 5px 10px;
-	margin-bottom: 15px !important;
-}
+
 .active{
 	background-color: rgba(0,0,0,0.3);
 }
@@ -313,50 +305,78 @@ tr:hover {
 	position: absolute;
 	right:0;
 	bottom: -15px;
-	color: rgba(255,255,255,0.5);
+	color: rgba(0,0,0,1);
 	font-size: 10px;
 }
 .msg_head{
 	position: relative;
 }
-#action_menu_btn{
-	position: absolute;
-	right: 10px;
-	top: 10px;
-	color: white;
-	cursor: pointer;
-	font-size: 20px;
-}
-.action_menu{
-	z-index: 1;
-	position: absolute;
-	padding: 15px 0;
-	background-color: rgba(0,0,0,0.5);
-	color: white;
-	border-radius: 15px;
-	top: 30px;
-	right: 15px;
-	display: none;
-}
-.action_menu ul{
-	list-style: none;
-	padding: 0;
-	margin: 0;
-}
-.action_menu ul li{
-	width: 100%;
-	padding: 10px 15px;
-	margin-bottom: 5px;
-}
-.action_menu ul li i{
-	padding-right: 10px;
-}
-.action_menu ul li:hover{
-	cursor: pointer;
-	background-color: rgba(0,0,0,0.2);
-}
+
+
+
+
 @media(max-width: 576px){
 	.contacts_card{
 	margin-bottom: 15px !important;
 	}
 }
+
+.breadcrumb_main {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    height: 50px; /* Adjust the height to fit the image and buttons */
+}
+
+.breadcrumb_main .logo {
+    height: 80px; /* Adjust this value as needed to fit the height of the nav bar */
+	margin-top: 20px;
+    margin-left: 1px; /* Space between the logo and the first button */
+}
+
+.breadcrumb_main .btn {
+	margin-top: 20px;
+    margin-right: 10px; /* Space between buttons */
+}
+
+.breadcrumb_main .btn:last-child {
+    margin-right: 0; /* Remove margin for the last button */
+}
+
+/* Reset default margins and paddings */
+/* Reset default margins and paddings */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.body-class {
+    min-height: 100vh; /* Ensure the body takes at least full viewport height */
+    display: flex;
+    flex-direction: column;
+}
+
+.navbar {
+    background-color: #ffffff; /* Adjust as needed */
+    border-bottom: 1px solid #dddddd; /* Example border style */
+    padding: 10px 0;
+}
+
+
+.faq-section {
+    flex: 1; /* Fill remaining space */
+    overflow-y: auto; /* Add vertical scroll if needed */
+    padding: 15px;
+    background-color: #f8f9fa; /* Example background color */
+    border-radius: 5px;
+	height: 100%;
+}
+
+@media (max-width: 1000px) {
+    .msg_card_body, .faq-section {
+        height: auto; /* Reset height for mobile */
+    }
+}
+
