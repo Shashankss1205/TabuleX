@@ -1,63 +1,3 @@
-// navigator.mediaDevices.getUserMedia({ audio: true })
-// 	.then(function (stream) {
-// 		// Create a MediaRecorder instance to record the audio stream
-// 		const mediaRecorder = new MediaRecorder(stream);
-// 		const chunks = [];
-
-// 		// When data is available, add it to the chunks array
-// 		mediaRecorder.ondataavailable = function (e) {
-// 			chunks.push(e.data);
-// 		};
-
-// 		// When recording stops, create a Blob and upload it
-// 		mediaRecorder.onstop = function () {
-// 			const blob = new Blob(chunks, { 'type': 'audio/mp3' });
-
-// 			// Here you can send the blob to your API using fetch or any other method
-// 			// For example:
-// 			const formData = new FormData();
-// 			formData.append('audio', blob);
-// 			fetch('/audio', { method: 'POST', body: formData })
-// 			  .then(response => {
-// 			    // Handle response
-// 				console.log(response)
-// 			  })
-// 			  .catch(error => {
-// 			    // Handle error
-// 			  });
-// 		};
-
-// 		// Start recording when the user clicks a button
-// 		recordBtn = document.querySelector("#recordBtn")
-// 		stopBtn = document.querySelector("#stopBtn")
-// 		recordBtn.addEventListener('click', function () {
-// 			mediaRecorder.start();
-// 		});
-
-// 		// Stop recording when the user clicks a button
-// 		stopBtn.addEventListener('click', function () {
-// 			mediaRecorder.stop();
-// 		});
-// 	})
-// 	.catch(function (err) {
-// 		console.log('The following error occurred: ' + err);
-// 	});
-// document.getElementById("changeCssButton").addEventListener("click", function () {
-// 	var icon = document.getElementById("icon");
-// 	var btn = document.getElementById("changeCssButton");
-// 	if (icon.classList.contains("fa-moon")) {
-// 		// If the icon is currently a sun, change it to a moon
-// 		icon.classList.remove("fa-moon");
-// 		icon.classList.add("fa-sun", "fa-inverse");
-// 		btn.style.backgroundColor = "#1a1a1a";
-// 	} else {
-// 		// If the icon is currently a moon, change it to a sun
-// 		icon.classList.remove("fa-sun", "fa-inverse");
-// 		icon.classList.add("fa-moon");
-// 		btn.style.backgroundColor = "white";
-// 	}
-// });
-// JavaScript code to close the modal
 document.addEventListener("DOMContentLoaded", function () {
 	// Get the close button element
 	var closeButton = document.querySelector('.modal .close');
@@ -136,43 +76,134 @@ document.getElementById('fileInput2').addEventListener('change', function () {
 	}
 });
 
-var isToggled = false; // Variable to track the state
+document.addEventListener("DOMContentLoaded", function () {
+    var isToggled = false; // Variable to track the state
 
-document.getElementById("changeCssButton").addEventListener("click", function () {
-	// Select the elements with the classes to be changed
-	var bodyElement = document.querySelector('body');
-	var chatElement = document.querySelector('.card');
-	var sidenavElement = document.querySelector('.sidenav');
-	var showElement = document.querySelector('#show_table');
-	var modal = document.querySelector('.modal-content');
-	var btn = document.getElementById("changeCssButton");
-	// Toggle between two states
-	if (!isToggled) {
-		// Apply changes for the first state
-		bodyElement.style.backgroundColor = "#1a1a1a"; // Change background color
-		bodyElement.style.color = "#f7f8fc";
-		modal.style.backgroundColor = "#1a1a1a";
-		chatElement.style.backgroundColor = "#1a1a1a"; // Change text color
-		sidenavElement.style.backgroundColor = "#1a1a1a"; // Change background color
-		sidenavElement.style.color = "white"; // Change text color
-		showElement.style.color = "white";
-		isToggled = true; // Update the state
-		btn.style.color = "white"
-	} else {
-		// Revert changes for the second state
-		bodyElement.style.backgroundColor = ""; // Revert background color
-		bodyElement.style.color = "";
-		modal.style.backgroundColor = "";
-		chatElement.style.color = ""; // Revert text color
-		chatElement.style.backgroundColor = "";
-		showElement.style.color = "black";
-		sidenavElement.style.backgroundColor = ""; // Revert background color
-		sidenavElement.style.color = ""; // Revert text color
-		isToggled = false; // Update the state
-		btn.style.color = "black"
-	}
+    var changeCssButton = document.getElementById("changeCssButton");
+    var icon = document.getElementById("icon");
+    var bodyElement = document.querySelector('body');
+    var chatElement = document.querySelector('.card');
+    var sidenavElement = document.querySelector('.sidenav');
+    // var showElement = document.querySelector('#show_table');
+	var graphPlotterButton = document.querySelector('a[href="/graphy"]');
+    var chatBotButton = document.querySelector('a[href="/"]');
+    var modal = document.querySelector('.modal-content');
+
+    changeCssButton.addEventListener("click", function () {
+        isToggled = !isToggled;
+
+        if (isToggled) {
+            // Enable dark mode
+            bodyElement.style.backgroundColor = "#1a1a1a";
+            bodyElement.style.color = "#f7f8fc";
+            if (modal) modal.style.backgroundColor = "#1a1a1a";
+            if (chatElement) chatElement.style.backgroundColor = "#1a1a1a";
+            if (chatElement) chatElement.style.color = "#f7f8fc";
+            if (sidenavElement) sidenavElement.style.backgroundColor = "#1a1a1a";
+            if (sidenavElement) sidenavElement.style.color = "white";
+            //if (showElement) showElement.style.color = "white";
+            changeCssButton.style.color = "white";
+			graphPlotterButton.style.color = "#ffc100"; // Adjust as needed
+            chatBotButton.style.color = "#ffc100"; // Adjust as needed
+            // Change icon to sun
+            icon.classList.remove("fa-moon");
+            icon.classList.add("fa-sun");
+        } else {
+            // Disable dark mode
+            bodyElement.style.backgroundColor = "";
+            bodyElement.style.color = "";
+            if (modal) modal.style.backgroundColor = "";
+            if (chatElement) chatElement.style.backgroundColor = "";
+            if (chatElement) chatElement.style.color = "";
+            if (sidenavElement) sidenavElement.style.backgroundColor = "";
+            if (sidenavElement) sidenavElement.style.color = "";
+            //if (showElement) showElement.style.color = "black";
+            changeCssButton.style.color = "black";
+			graphPlotterButton.style.color = ""; // Reset to default
+            chatBotButton.style.color = ""; // Reset to default
+            // Change icon to moon
+            icon.classList.remove("fa-sun");
+            icon.classList.add("fa-moon");
+        }
+    });
 });
 
+document.addEventListener('DOMContentLoaded', function () {
+    const recordBtn = document.getElementById('recordBtn');
+    const stopBtn = document.getElementById('stopBtn');
+    const textInput = document.getElementById('text');
+
+    let recognition;
+    let isRecording = false;
+
+    // Check for browser support
+    if (!('webkitSpeechRecognition' in window)) {
+        alert('Your browser does not support speech recognition. Try using Chrome.');
+    } else {
+        recognition = new webkitSpeechRecognition();
+        recognition.continuous = true;
+        recognition.interimResults = true;
+        recognition.lang = 'en-US';
+
+        recognition.onstart = function () {
+            isRecording = true;
+            recordBtn.style.display = 'none';
+            stopBtn.style.display = 'inline';
+        };
+
+        recognition.onresult = function (event) {
+            let interimTranscript = '';
+            let finalTranscript = '';
+
+            for (let i = event.resultIndex; i < event.results.length; ++i) {
+                if (event.results[i].isFinal) {
+                    finalTranscript += event.results[i][0].transcript;
+                } else {
+                    interimTranscript += event.results[i][0].transcript;
+                }
+            }
+
+            textInput.value = finalTranscript + interimTranscript;
+        };
+
+        recognition.onerror = function (event) {
+            console.error('Speech recognition error', event);
+        };
+
+        recognition.onend = function () {
+            isRecording = false;
+            recordBtn.style.display = 'inline';
+            stopBtn.style.display = 'none';
+        };
+    }
+
+    recordBtn.addEventListener('click', function () {
+        if (isRecording) {
+            recognition.stop();
+            return;
+        }
+        recognition.start();
+    });
+
+    stopBtn.addEventListener('click', function () {
+        if (isRecording) {
+            recognition.stop();
+        }
+    });
+});
+
+// ***************************************QUESTIONS HINT SECTION****************************************
+function copyToClipboard(text) {
+	const regex = /^\d+/;
+    if (regex.test(text)) {
+        text = text.substring(3);
+    }
+	navigator.clipboard.writeText(text).then(function() {
+		alert('Copied to clipboard: ' + text);
+	}, function(err) {
+		console.error('Could not copy text: ', err);
+	});
+}
 
 $(document).ready(function () {
 	$("#messageArea").on("submit", function (event) {
@@ -182,7 +213,9 @@ $(document).ready(function () {
 		const str_time = hour + ":" + minute;
 		var rawText = $("#text").val();
 
-		var userHtml = '<div class="d-flex justify-content-end mb-4"><div class="msg_cotainer_send">' + rawText + '<span class="msg_time_send">' + str_time + '</span></div><div class="img_cont_msg"><img src="https://i.ibb.co/d5b84Xw/Untitled-design.png" class="rounded-circle user_img_msg"></div></div>';
+		var userHtml = '<div class="d-flex justify-content-end mb-4"><div class="msg_cotainer_send">' + rawText + 
+		'<span class="msg_time_send">' + str_time + 
+		'</span></div><div class="img_cont_msg"><img src="../static/user_img.png" class="rounded-circle user_img_msg"></div></div>';
 
 		$("#text").val("");
 		$("#messageFormeight").append(userHtml);
@@ -260,3 +293,163 @@ $(document).ready(function () {
 	});
 });
 
+// ***************************************SELECT TABLE****************************************
+$(document).ready(function () {
+    $('#select_table').click(function () {
+        $.ajax({
+            type: 'GET',
+            url: '/listTable',
+            contentType: 'application/json',
+            success: function (response) {
+                let data = response;
+                console.log(data);
+                populateselectModal(data);
+            }
+        });
+    });
+});
+
+function populateselectModal(data) {
+    let modalBody = $('#table_modal_body');
+    modalBody.empty(); // Clear previous items
+
+    data.forEach(itemArray => {
+        if (itemArray.length > 0) {
+            let item = itemArray[0]; // Assuming each array contains a single item
+            console.log(item);
+            
+            // Create a div for each item
+            let itemDiv = $('<div class="mb-2">');
+            
+            // Create a link with a download icon (using Font Awesome as an example)
+            let downloadIcon = $('<i class="fas fa-download mr-2"></i>');
+            let itemName = $('<span>').text(item);
+            let downloadLink = $('<div class="btn btn-outline-primary btn-sm">')
+                                .append(downloadIcon)
+                                .append(itemName);
+            
+			downloadLink.click(function(event) {
+				event.preventDefault();
+				let tableName = item;
+				selectTableFunction(tableName);
+			});
+            // Append download link to item div
+            itemDiv.append(downloadLink);
+            
+            // Append item div to modal body
+            modalBody.append(itemDiv);
+        }
+    });
+}
+
+function selectTableFunction(tableName) {
+    // Make AJAX call to Python backend endpoint
+    $.ajax({
+        type: 'POST',
+        url: '/selectTable', // Replace with your backend endpoint URL
+        contentType: 'application/json',
+        data: JSON.stringify({ tableName: tableName }),
+        success: function(response) {
+            console.log('Selected successfully.');
+            // Handle success response if needed
+        },
+        error: function(xhr, status, error) {
+            console.error('Error calling Python function:', error);
+            // Handle error response if needed
+        }
+    });
+}
+
+
+// ***************************************DOWNLOAD TABLE****************************************
+$(document).ready(function () {
+    $('#list_table').click(function () {
+        $.ajax({
+            type: 'GET',
+            url: '/listTable',
+            contentType: 'application/json',
+            success: function (response) {
+                let data = response;
+                console.log(data);
+                populateDownloadModal(data);
+            }
+        });
+    });
+});
+
+function populateDownloadModal(data) {
+	let modalBody = $('#Dtable_modal_body');
+	modalBody.empty(); // Clear previous items
+	
+	// Iterate over each table item in data
+	data.forEach(itemArray => {
+		if (itemArray.length > 0) {
+			let item = itemArray[0]; // Assuming each array contains a single item (table name)
+			
+			// Create a div for each item
+			let itemDiv = $('<div class="mb-2">');
+			
+			// Create a link with a download icon (using Font Awesome as an example)
+			let downloadIcon = $('<i class="fas fa-download mr-2"></i>');
+			let itemName = $('<span>').text(item);
+			let downloadLink = $('<a class="btn btn-outline-primary btn-sm">').append(downloadIcon).append(itemName);
+			
+			downloadLink.click(function(event) {
+				event.preventDefault();
+				let tableName = item;
+				selectTableFunction(tableName);
+			});
+			
+			// Append download link to item div
+			itemDiv.append(downloadLink);
+			
+			// Append item div to modal body
+			modalBody.append(itemDiv);
+		}
+	});
+}
+
+
+// ***************************************GRAPH IMAGE COMPONENT****************************************
+
+function updateGraphImage() {
+	var imgElement = document.getElementById('graphImage');
+	// console.log(imgElement)
+	var currentSrc = imgElement.src;
+
+	// Append a timestamp query parameter to ensure cache busting
+	var newSrc = currentSrc.split('?')[0] + '?timestamp=' + new Date().getTime();
+
+	// Update the image src
+	imgElement.src = newSrc;
+  }
+
+function pollForChanges() {
+setInterval(function () {
+	updateGraphImage();
+	// console.log(i++)
+}, 5000); // 5000 milliseconds = 5 seconds
+}
+
+$(document).ready(function () {
+	$("#graphinput").on("submit", function (event) {
+	  event.preventDefault();
+
+	  var rawText = $("#text").val();
+
+	  // Clear the input field
+	  $("#text").val("");
+	  pollForChanges();
+	  // Send the input text to the API
+	  $.ajax({
+		data: {
+		  msg: rawText,
+		},
+		type: "POST",
+		url: "/graphy",
+	  }).done(function (response) {
+		// Handle the response from the API if needed
+		console.log(response);
+	  });
+	});
+  });

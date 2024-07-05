@@ -1,86 +1,89 @@
-from flask import Flask, request, render_template, jsonify
+from flask import Flask, request, render_template, jsonify, send_file
 from dotenv import load_dotenv
 
 from flask_cors import CORS
 import os
 import re
 import sqlite3
-import csv
 import pandas as pd
+# import matplotlib.pyplot as plt
 import google.generativeai as genai
 from PIL import Image
 from io import BytesIO
-import requests
-# from userdata import HUGGINGFACE_API_KEY
-# from userdata import GOOGLE_API_KEY
+import subprocess
 
-load_dotenv()
-HUGGINGFACE_API_KEY = os.getenv('HUGGINGFACE_API_KEY')
-GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
-
+# load_dotenv()
+# GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
 
 
 app = Flask(__name__)
 CORS(app)
 
-
 db_name = "mydatabase.db"
 history = ['Good tabular data analysis agent']
 
-val = f"Bearer {HUGGINGFACE_API_KEY}"
-API_URL = "https://api-inference.huggingface.co/models/codenamewei/speech-to-text"
-headers = {"Authorization": val}
-
-
+# **************************************Helper Functions*******************************************
 def combo():
-    # 1. Connect to the SQLite database
     conn = sqlite3.connect(db_name)
-    # 2. Create a cursor object to execute SQL queries
     cursor = conn.cursor()
-    # 3. Query the SQLite database to fetch all table names
-    cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
-    # 4. Fetch the table names
+    cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name != 'sqlite_sequence';")
     table_names = cursor.fetchall()
     table_col_combo = []
-    # 5. Iterate through the table names and fetch their column names
     for table_name in table_names:
-        table_name = table_name[0]  # Extract the table name from the result
-
-        # Query to fetch column names of the current table
+        table_name = table_name[0]
         query = f"PRAGMA table_info({table_name});"
         cursor.execute(query)
-
-        # Fetch the column names for the current table
         column_names = [row[1] for row in cursor.fetchall()]
-
-        # Print or use the table name and column names
-        print("Table:", table_name)
-        print("Columns:", column_names)
+        # print("Table:", table_name, "Columns:", column_names)
         combo = f"'{table_name}' has columns {column_names}"
-        print(combo)
+        # print(combo)
         table_col_combo.append(combo)
         
-    print(table_col_combo)
-    # 6. Close the cursor and the database connection
+    # print(table_col_combo)
     cursor.close()
     conn.close()
     return table_col_combo
 
+def question_generator():
+    table_col_combo= combo()
+    genai.configure(api_key=GOOGLE_API_KEY)
+    model = genai.GenerativeModel('gemini-pro')
+    prompt = f"Write 10-15 Natural language questions to ask related to the tables {table_col_combo}. Pre exisiting tables and their columns are {table_col_combo}.Dont make random columns on your own. Just write the lines no extra text"
+    response = model.generate_content(prompt)
+    reply = response.text
+    print(reply)
+    ques_list = [line.strip() for line in reply.strip().split('\n')]          
+    print(ques_list)
+    return ques_list
+items= question_generator()
+
 def collector(chat):
     history.insert(0, chat)
+
+def extract_code_block(text):
+    if text.find("```python") | text.find("```Python") | text.find("```PYTHON"):
+        start =0
+    else:
+        start=text.find("```")
+        end = text.find("```", start + 3)
+        if end == -1:
+            return None
+        return text[start + 3:end].strip()
+    end = text.find("```", start + 3)
+    if end == -1:
+        return None
+    return text[start + 9:end].strip()
 
 def chatbot(input):
     if input:
         table_col_combo = combo()
         
         genai.configure(api_key=GOOGLE_API_KEY)
-
         model = genai.GenerativeModel('gemini-pro')
 
         # prompt = "Write a story about a magic backpack."
-        prompt = f"Write an SQLite command for {input}. Pre exisiting tables and their columns are {table_col_combo}. Pre-existing chats are {history[0]}. Dont make random columns on your own and try to use columns with highest co-relation when asked to alter something"
-        
-        print(f"Write an SQLite command to {input} if the table and their columns are {table_col_combo}  Pre-existing chats are {history[0]}.")
+        prompt = f"Write an SQLite command for {input}. Pre exisiting tables and their columns are {table_col_combo}. Pre-existing chats are {history[0]}. Dont make random columns on your own and try to use columns with highest co-relation when asked to alter something, Do not forget to put column names in double quotes if the column has 2 words in it."
+        print(prompt)
         response = model.generate_content(prompt)
         reply = response.text
         print(reply)
@@ -95,11 +98,40 @@ def chatbot(input):
             responses.append(response)            
         return responses
 
+def graphplot(input):
+    if (input):
+        table_col_combo = combo()
+        
+        genai.configure(api_key=GOOGLE_API_KEY)
 
-def get_db_connection():      # Function to establish a database connection
+        model = genai.GenerativeModel('gemini-pro')
+
+        # prompt = "Write a story about a magic backpack."
+        prompt = f"Write a PYTHON command for {input} and dataframe is named 'output.csv'. Pre exisiting tables and their columns are {table_col_combo}. Pre-existing chats are {history[0]}. Dont make random columns on your own and try to use columns with highest co-relation when asked to alter something, Do not forget to put column names in double quotes if the column has 2 words in it.Only use Matplotlib, pandas, numpy for creating the graphs. save the image plot as 'static/graph.png'"
+        
+        print(f"Write a PYTHON command to {input} if the table and their columns are {table_col_combo}  Pre-existing chats are {history[0]}.")
+        response = model.generate_content(prompt)
+        reply = response.text
+        print(reply)
+        if not reply.startswith('import'):
+            reply = extract_code_block(reply)
+
+        subproc(reply)
+    
+        return reply
+
+def process_table_download(table_name):
+    conn = sqlite3.connect('mydatabase.db')
+    query = "SELECT * FROM " + table_name
+    df = pd.read_sql_query(query, conn)
+    df.to_csv('output.csv', index=False)
+    conn.close()
+    print("Table data has been written to output.csv")
+    return {'status': 'success'}
+
+def get_db_connection():
     conn = sqlite3.connect(db_name)
     return conn
-
 
 def execute_sql(sql_command):
     conn = get_db_connection()
@@ -126,14 +158,40 @@ def execute_sql(sql_command):
     print(tables)
     return tables
 
+def subproc(new_file_content):
+    with open('dynamic_script.py', 'w') as file:
+        file.write(new_file_content)
+
+    print("dynamic_script.py created.")
+    # activate_script = os.path.join('myenv', 'Scripts', 'activate')
+    # activate_cmd = f'call "{activate_script}"'
+    # subprocess.run(activate_cmd, shell=True, check=True)
+
+    # Run dynamic_script.py using the Python interpreter
+    # python_path = sys.executable
+    result = subprocess.run(['python3', 'dynamic_script.py'], capture_output=True, text=True)
+    # result = subprocess.run(['python3', 'dynamic_script.py'], capture_output=True, text=True)
+    # Print the output
+    print(result.stdout)
+    print(result.stderr)
+    # return 1
 
 
-#Routes for Website
+# **************************************Routes for Website*******************************************
 @app.route("/")
 def index():
-    return render_template('index.html')
+    # return render_template('index.html')
+    return render_template('index.html', items=items)
 
+@app.route("/graphy")
+def graphPlot():
+    return render_template('graphy.html')
 
+@app.route("/about")
+def about():
+    return render_template('about.html')
+
+# *****************************************Routes for APIs******************************************
 @app.route("/get", methods=["GET", "POST"])
 def chat():
     input = request.form["msg"]
@@ -143,20 +201,47 @@ def chat():
     print(type(responses))
     return responses
 
+@app.route("/graphy", methods=["POST"])
+def graphy():
+    input = request.form["msg"]
+    print("Input: " + input)
+    responses = graphplot(input)
+    print(responses)
+    print(type(responses))
+    return responses
 
-# @app.route("/audio", methods=["POST"])
-# def query():
-#     # with open(filename, "rb") as f:
-#         # data = f.read()
-#     audio_data = request.files['audio']
-#     response = requests.post(API_URL, headers=headers, files={'audio': audio_data})
-#     print(response.json())
-#     if response.status_code == 200:
-#         return response.json()["text"]
-#     else:
-#         return "Error processing audio", 500
+@app.route("/listTable", methods=["GET"])
+def listingTable():
+    conn = sqlite3.connect(db_name)
+    cursor = conn.cursor()
+    cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name != 'sqlite_sequence';")
+    table_names = cursor.fetchall()
+    print(table_names)
+    cursor.close()
+    conn.close()
+    return table_names
 
-    
+@app.route('/selectTable', methods=['POST'])
+def select_table():
+    data = request.get_json()
+    table_name = data.get('tableName')
+
+    # Call your Python function with table_name as input
+    # Example: Replace this with your actual function call
+    result = process_table_download(table_name)
+
+    # Return response if needed
+    return jsonify({'message': 'Table download initiated.', 'result': result}), 200
+
+@app.route('/downloadTable')
+def Download_CSV():
+    path = "./output.csv"
+    return send_file(path, as_attachment=True)
+
+@app.route('/downloadGraph')
+def Download_Graph():
+    path = "./static/graph.png"
+    return send_file(path, as_attachment=True)
 
 @app.route('/addimg', methods=['POST'])
 def upload():
@@ -167,9 +252,9 @@ def upload():
     if file.filename == '':
         return 'No selected file'
     image = Image.open(BytesIO(file.read()))
-    # from userdata import GOOGLE_API_KEY
     genai.configure(api_key=GOOGLE_API_KEY)
     imgmodel = genai.GenerativeModel('gemini-pro-vision')
+    print(imgmodel)
     print(f"Write an SQLite command to add the table heads along with the input data present in the image. Dont make random columns on your own. You are warned : Never compromise the SQL syntax according to the input")
     response = imgmodel.generate_content([f"Write an SQLite command in code blocks like ```sql ........ ``` to add the table heads along with the input data present in the image. Dont make random columns on your own. Dont give table names from the list : {table_col_combo}. You are warned : Never compromise the SQL syntax according to the input", image], stream=True)
     response.resolve()
@@ -187,7 +272,6 @@ def upload():
         responses.append(response)            
     return responses
 
-
 @app.route('/addtable', methods=['POST'])
 def browse_file():
     if 'file' not in request.files:
@@ -202,41 +286,15 @@ def browse_file():
     connection = sqlite3.connect(db_name)
     df.to_sql(base_filename, connection, if_exists='replace', index=False)
     connection.close()
+    items= question_generator()
     return 'File uploaded successfully'
-    # base_filename = file.filename.split('.')[0]
-    # connection = sqlite3.connect(db_name)
-    # cursor = connection.cursor()
-
-    # # Create table with column names inferred from the first row of the CSV file
-    # create_table_query = f"CREATE TABLE IF NOT EXISTS {base_filename} ("
-    # with open(file, 'r') as f:
-    #     columns = f.readline().strip().split(',')
-    #     for column in columns:
-    #         create_table_query += f"{column.strip()} TEXT,"
-    #     create_table_query = create_table_query[:-1] + ")"
-    #     cursor.execute(create_table_query)
-
-    # # Insert data from CSV into the created table
-    # with open(file, 'r') as f:
-    #     next(f)  # Skip header row
-    #     for line in f:
-    #         values = line.strip().split(',')
-    #         placeholders = ','.join(['?' for _ in range(len(values))])
-    #         insert_query = f"INSERT INTO {base_filename} VALUES ({placeholders})"
-    #         cursor.execute(insert_query, values)
-
-    # connection.commit()
-    # connection.close()
-    
-    # return 'File uploaded successfully'
-
 
 @app.route('/show', methods=['POST'])
 def show_file():
 
     conn = sqlite3.connect(db_name)
     cursor = conn.cursor()
-    cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
+    cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name != 'sqlite_sequence';")
     tables = [table[0] for table in cursor.fetchall()]
     
     # Fetch data from each table
@@ -254,9 +312,10 @@ def show_file():
         table_data = [list(t) for t in table_data]
         data[table] = table_data
     conn.close()
-    print(data)
+    # print(data)
     print(type(data))
     return jsonify({'output_value': data})
+
 
 if __name__ == '__main__':
     app.run(debug=True)
