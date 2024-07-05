@@ -14,7 +14,7 @@ import subprocess
 
 # load_dotenv()
 # GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
-GOOGLE_API_KEY = 'AIzaSyAQCjr0tG92ET84s79YAfXTzte5aLj0c7E'
+
 
 app = Flask(__name__)
 CORS(app)
