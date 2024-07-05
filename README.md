@@ -34,8 +34,9 @@ Integration of Gemini API with SQL database. Also, there are no previous solutio
 
 # Setting up locally
 1. Install python (skip, if already present)
-2. For Windows: 
+2. pip install virtualenv => virtualenv myenv
+3. For Windows: 
     myenv\Scripts\activate
    For Linux/Mac:
     source myenv/bin/activate
-3. pip install -r requirements.txt
+4. pip install -r requirements.txt

@@ -12,8 +12,9 @@ from PIL import Image
 from io import BytesIO
 import subprocess
 
-load_dotenv()
-GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
+# load_dotenv()
+# GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
+GOOGLE_API_KEY = 'AIzaSyAQCjr0tG92ET84s79YAfXTzte5aLj0c7E'
 
 app = Flask(__name__)
 CORS(app)
@@ -179,6 +180,7 @@ def subproc(new_file_content):
 # **************************************Routes for Website*******************************************
 @app.route("/")
 def index():
+    # return render_template('index.html')
     return render_template('index.html', items=items)
 
 @app.route("/graphy")
