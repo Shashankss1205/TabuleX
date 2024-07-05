@@ -11,7 +11,7 @@ import google.generativeai as genai
 from PIL import Image
 from io import BytesIO
 import subprocess
-
+GOOGLE_API_KEY = 'AIzaSyAQCjr0tG92ET84s79YAfXTzte5aLj0c7E'
 # load_dotenv()
 # GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
 
