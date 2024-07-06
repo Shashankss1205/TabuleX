@@ -21,7 +21,6 @@ CORS(app)
 
 db_name = "mydatabase.db"
 history = ['Good tabular data analysis agent']
-
 # **************************************Helper Functions*******************************************
 def combo():
     conn = sqlite3.connect(db_name)
