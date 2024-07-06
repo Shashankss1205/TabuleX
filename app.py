@@ -167,7 +167,7 @@ def subproc(new_file_content):
 
     # Run dynamic_script.py using the Python interpreter
     # python_path = sys.executable
-    result = subprocess.run(['python', 'dynamic_script.py'], capture_output=True, text=True)
+    result = subprocess.run(['python3', 'dynamic_script.py'], capture_output=True, text=True)
     # result = subprocess.run(['python3', 'dynamic_script.py'], capture_output=True, text=True)
     # Print the output
     print(result.stdout)
