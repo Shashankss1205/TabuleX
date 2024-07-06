@@ -84,27 +84,34 @@ document.addEventListener("DOMContentLoaded", function () {
     var bodyElement = document.querySelector('body');
     var chatElement = document.querySelector('.card');
     var sidenavElement = document.querySelector('.sidenav');
-    // var showElement = document.querySelector('#show_table');
+    var faqs = document.querySelector('.faq-section');
 	var graphPlotterButton = document.querySelector('a[href="/graphy"]');
     var chatBotButton = document.querySelector('a[href="/"]');
     var modal = document.querySelector('.modal-content');
+    var faqItems = document.querySelectorAll('.list-group-item');
 
     changeCssButton.addEventListener("click", function () {
         isToggled = !isToggled;
 
         if (isToggled) {
             // Enable dark mode
-            bodyElement.style.backgroundColor = "#1a1a1a";
+            bodyElement.style.backgroundColor = "070F2B";
             bodyElement.style.color = "#f7f8fc";
-            if (modal) modal.style.backgroundColor = "#1a1a1a";
-            if (chatElement) chatElement.style.backgroundColor = "#1a1a1a";
+            if (modal) modal.style.backgroundColor = "070F2B";
+            if (chatElement) chatElement.style.backgroundColor = "070F2B";
             if (chatElement) chatElement.style.color = "#f7f8fc";
-            if (sidenavElement) sidenavElement.style.backgroundColor = "#1a1a1a";
+            if (sidenavElement) sidenavElement.style.backgroundColor = "070F2B";
             if (sidenavElement) sidenavElement.style.color = "white";
-            //if (showElement) showElement.style.color = "white";
+            if (faqs) faqs.style.backgroundColor = "535C91";
             changeCssButton.style.color = "white";
-			graphPlotterButton.style.color = "#ffc100"; // Adjust as needed
-            chatBotButton.style.color = "#ffc100"; // Adjust as needed
+			graphPlotterButton.style.color = "#FF9EAA"; // Adjust as needed
+            chatBotButton.style.color = "#FF9EAA"; // Adjust as needed
+
+			faqItems.forEach(function (item) {
+                item.style.backgroundColor = "#292B4A";
+                item.style.color = "white";
+            });
+
             // Change icon to sun
             icon.classList.remove("fa-moon");
             icon.classList.add("fa-sun");
@@ -117,10 +124,16 @@ document.addEventListener("DOMContentLoaded", function () {
             if (chatElement) chatElement.style.color = "";
             if (sidenavElement) sidenavElement.style.backgroundColor = "";
             if (sidenavElement) sidenavElement.style.color = "";
-            //if (showElement) showElement.style.color = "black";
+            if (faqs) faqs.style.backgroundColor = "";
             changeCssButton.style.color = "black";
 			graphPlotterButton.style.color = ""; // Reset to default
             chatBotButton.style.color = ""; // Reset to default
+
+			faqItems.forEach(function (item) {
+                item.style.backgroundColor = "";
+                item.style.color = "";
+            });
+
             // Change icon to moon
             icon.classList.remove("fa-sun");
             icon.classList.add("fa-moon");

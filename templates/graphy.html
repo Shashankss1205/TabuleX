@@ -49,10 +49,43 @@
     >
       <div class="d-flex align-items-center">
         <img src="../static/logo.png" alt="Profile Image" class="logo" />
+        <h2
+          style="
+            margin-top: 25;
+            font-size: 150%;
+            font-family: Candara;
+            font-weight: bold;
+          "
+        >
+          NLPeXperts
+        </h2>
       </div>
       <div class="d-flex align-items-center">
-        <a href="/graphy" class="btn btn-primary mx-2">Graph Plotter</a>
-        <a href="/" class="btn btn-primary mx-2">ChatBot</a>
+        <a
+          href="/"
+          class="btn btn-primary mx-2"
+          id="chatId"
+          style="
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS',
+              sans-serif;
+            font-size: 100%;
+            font-weight: bold;
+          "
+          >ChatBot</a
+        >
+        <a
+          href="/graphy"
+          class="btn btn-primary mx-2"
+          id="graphId"
+          style="
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS',
+              sans-serif;
+            font-size: 100%;
+            font-weight: bold;
+          "
+          >Graph Plotter</a
+        >
+
         <button
           id="changeCssButton"
           class="btn"
@@ -176,14 +209,14 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="tableModalLabel">Tables</h5>
-            <button
+            <!-- <button
               type="button"
               class="close"
               data-dismiss="modal"
               aria-label="Close"
             >
               <span aria-hidden="true">&times;</span>
-            </button>
+            </button> -->
           </div>
           <div class="modal-body">
             <div id="table_modal_body">
