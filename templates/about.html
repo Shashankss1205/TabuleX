@@ -1,137 +1,202 @@
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link
+  href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+  rel="stylesheet"
+  id="bootstrap-css"
+/>
+<!-- Include Popper.js -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+/>
+<!-- Include Font Awesome CSS -->
 <!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About NLPeXpert's Chatbot</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
-        integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
-    <style>
-        /* Global Styles */
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f8f9fa;
-            color: #343a40;
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: auto;
-            padding: 20px;
-        }
-
-        /* Header Styles */
-        header {
-            background-color: #007bff;
-            padding: 10px 0;
-        }
-
-        header h1 {
-            color: #fff;
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 0;
-        }
-
-        /* Main Content Styles */
-        .card {
-            border-radius: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: box-shadow 0.3s ease;
-            margin-bottom: 20px;
-            background-color: #fff;
-        }
-
-        .card:hover {
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        }
-
-        .card-header {
-            background-color: #007bff;
-            color: #fff;
-            border-radius: 15px 15px 0 0;
-        }
-
-        .card-body,
-        .card-footer {
-            padding: 20px;
-        }
-
-        /* Footer Styles */
-        footer {
-            background-color: #343a40;
-            color: #fff;
-            text-align: center;
-            padding: 10px 0;
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-        }
-
-        footer p {
-            margin-bottom: 0;
-        }
-
-        a {
-            color: #007bff;
-            text-decoration: none;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-    </style>
-</head>
-
-<body>
-    <header>
-        <div class="container">
-            <h1>About NLPeXpert's Chatbot</h1>
-        </div>
-    </header>
-
-    <main>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-8 offset-md-2">
-                    <div class="card">
-                        <div class="card-header">
-                            <h2 class="text-center">Overview</h2>
-                        </div>
-                        <div class="card-body">
-                            <p>NLPeXpert's Chatbot is an interactive tool designed for data analytics and communication.</p>
-                            <p>Key features include:</p>
-                            <ul>
-                                <li>Real-time chat interface</li>
-                                <li>Data table management</li>
-                                <li>File upload capabilities for CSV and image files</li>
-                                <li>Integration with a graph plotting module</li>
-                            </ul>
-                            <p>Developed using Bootstrap for frontend styling and jQuery for dynamic content handling.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <footer>
-        <div class="container">
-            <p>Contact: <a href="mailto:info@example.com">info@example.com</a></p>
-            <p>Visit our <a href="#">GitHub repository</a> for more details.</p>
-            <p>&copy; 2024 NLPeXpert. All rights reserved.</p>
-        </div>
-    </footer>
-
+<html>
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
+    <title>NLPeXpert's Chatbot</title>
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+      integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-        crossorigin="anonymous"></script>
-</body>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='style.css')}}"
+    />
+  </head>
+  <body class="body-class">
+    <nav
+      class="breadcrumb_main d-flex align-items-center justify-content-between"
+    >
+      <div class="d-flex align-items-center">
+        <img src="../static/logo.png" alt="Profile Image" class="logo" />
+        <h2
+          style="
+            margin-top: 25;
+            font-size: 150%;
+            font-family: Candara;
+            font-weight: bold;
+          "
+        >
+          NLPeXperts
+        </h2>
+      </div>
+      <div class="d-flex align-items-center">
+        <a
+          href="/"
+          class="btn btn-primary mx-2"
+          id="chatId"
+          style="
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS',
+              sans-serif;
+            font-size: 100%;
+            font-weight: bold;
+          "
+          >ChatBot</a
+        >
+        <a
+          href="/graphy"
+          class="btn btn-primary mx-2"
+          id="graphId"
+          style="
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS',
+              sans-serif;
+            font-size: 100%;
+            font-weight: bold;
+          "
+          >Graph Plotter</a
+        >
+        <a
+          href="/about"
+          class="btn btn-primary mx-2"
+          id="chatId"
+          style="
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS',
+              sans-serif;
+            font-size: 100%;
+            font-weight: bold;
+          "
+          >About Us</a
+        >
+        <button
+          id="changeCssButton"
+          class="btn"
+          style="font-size: xx-large; border: 0"
+        >
+          <i id="icon" class="fas fa-moon"></i>
+          <!-- Font Awesome sun icon -->
+        </button>
+      </div>
+    </nav>
+    <hr />
+    <div class="container">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="text-center">Overview</h2>
+        </div>
+        <div class="card-body">
+          <p>
+            NLPeXpert's Chatbot is an interactive tool designed for data
+            analytics and communication.
+          </p>
+          <p>Key features include:</p>
+          <ul>
+            <li>Real-time chat interface</li>
+            <li>Data table management</li>
+            <li>File upload capabilities for CSV and image files</li>
+            <li>Integration with a graph plotting module</li>
+          </ul>
+          <p>
+            Developed using Bootstrap for frontend styling and jQuery for
+            dynamic content handling.
+          </p>
+        </div>
+      </div>
+    </div>
+    <footer>
+      <div class="container">
+        <p>Contact: <a href="mailto:info@example.com">info@example.com</a></p>
+        <p>Visit our <a href="#">GitHub repository</a> for more details.</p>
+        <p>&copy; 2024 NLPeXpert. All rights reserved.</p>
+      </div>
+    </footer>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        var isToggled = false; // Variable to track the state
 
+        var changeCssButton = document.getElementById("changeCssButton");
+        var icon = document.getElementById("icon");
+        var bodyElement = document.querySelector("body");
+        var chatElement = document.querySelector(".card");
+        var graphPlotterButton = document.querySelector('a[href="/graphy"]');
+        var chatBotButton = document.querySelector('a[href="/"]');
+        var aboutusbutton = document.querySelector('a[href="/about"]');
+        var modal = document.querySelector(".modal-content");
+        var faqItems = document.querySelectorAll(".list-group-item");
+
+        changeCssButton.addEventListener("click", function () {
+          isToggled = !isToggled;
+
+          if (isToggled) {
+            // Enable dark mode
+            bodyElement.style.backgroundColor = "070F2B";
+            bodyElement.style.color = "#f7f8fc";
+            if (modal) modal.style.backgroundColor = "070F2B";
+            if (chatElement) chatElement.style.backgroundColor = "070F2B";
+            if (chatElement) chatElement.style.color = "#f7f8fc";
+            changeCssButton.style.color = "white";
+            graphPlotterButton.style.color = "#FF9EAA"; // Adjust as needed
+            aboutusbutton.style.color = "#FF9EAA"; // Adjust as needed
+            chatBotButton.style.color = "#FF9EAA"; // Adjust as needed
+
+            // Change icon to sun
+            icon.classList.remove("fa-moon");
+            icon.classList.add("fa-sun");
+          } else {
+            // Disable dark mode
+            bodyElement.style.backgroundColor = "";
+            bodyElement.style.color = "";
+            if (modal) modal.style.backgroundColor = "";
+            if (chatElement) chatElement.style.backgroundColor = "";
+            if (chatElement) chatElement.style.color = "";
+            changeCssButton.style.color = "black";
+            graphPlotterButton.style.color = ""; // Reset to default
+            aboutusbutton.style.color = ""; // Reset to default
+            chatBotButton.style.color = ""; // Reset to default
+
+            // Change icon to moon
+            icon.classList.remove("fa-sun");
+            icon.classList.add("fa-moon");
+          }
+        });
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+      crossorigin="anonymous"
+    ></script>
+  </body>
 </html>

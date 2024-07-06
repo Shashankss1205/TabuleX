@@ -77,143 +77,146 @@ document.getElementById('fileInput2').addEventListener('change', function () {
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-    var isToggled = false; // Variable to track the state
+	var isToggled = false; // Variable to track the state
 
-    var changeCssButton = document.getElementById("changeCssButton");
-    var icon = document.getElementById("icon");
-    var bodyElement = document.querySelector('body');
-    var chatElement = document.querySelector('.card');
-    var sidenavElement = document.querySelector('.sidenav');
-    var faqs = document.querySelector('.faq-section');
+	var changeCssButton = document.getElementById("changeCssButton");
+	var icon = document.getElementById("icon");
+	var bodyElement = document.querySelector('body');
+	var chatElement = document.querySelector('.card');
+	var sidenavElement = document.querySelector('.sidenav');
+	var faqs = document.querySelector('.faq-section');
 	var graphPlotterButton = document.querySelector('a[href="/graphy"]');
-    var chatBotButton = document.querySelector('a[href="/"]');
-    var modal = document.querySelector('.modal-content');
-    var faqItems = document.querySelectorAll('.list-group-item');
+	var chatBotButton = document.querySelector('a[href="/"]');
+	var aboutusbutton = document.querySelector('a[href="/about"]');
+	var modal = document.querySelector('.modal-content');
+	var faqItems = document.querySelectorAll('.list-group-item');
 
-    changeCssButton.addEventListener("click", function () {
-        isToggled = !isToggled;
+	changeCssButton.addEventListener("click", function () {
+		isToggled = !isToggled;
 
-        if (isToggled) {
-            // Enable dark mode
-            bodyElement.style.backgroundColor = "070F2B";
-            bodyElement.style.color = "#f7f8fc";
-            if (modal) modal.style.backgroundColor = "070F2B";
-            if (chatElement) chatElement.style.backgroundColor = "070F2B";
-            if (chatElement) chatElement.style.color = "#f7f8fc";
-            if (sidenavElement) sidenavElement.style.backgroundColor = "070F2B";
-            if (sidenavElement) sidenavElement.style.color = "white";
-            if (faqs) faqs.style.backgroundColor = "535C91";
-            changeCssButton.style.color = "white";
+		if (isToggled) {
+			// Enable dark mode
+			bodyElement.style.backgroundColor = "070F2B";
+			bodyElement.style.color = "#f7f8fc";
+			if (modal) modal.style.backgroundColor = "070F2B";
+			if (chatElement) chatElement.style.backgroundColor = "070F2B";
+			if (chatElement) chatElement.style.color = "#f7f8fc";
+			if (sidenavElement) sidenavElement.style.backgroundColor = "070F2B";
+			if (sidenavElement) sidenavElement.style.color = "white";
+			if (faqs) faqs.style.backgroundColor = "535C91";
+			changeCssButton.style.color = "white";
 			graphPlotterButton.style.color = "#FF9EAA"; // Adjust as needed
-            chatBotButton.style.color = "#FF9EAA"; // Adjust as needed
+			aboutusbutton.style.color = "#FF9EAA"; // Adjust as needed
+			chatBotButton.style.color = "#FF9EAA"; // Adjust as needed
 
 			faqItems.forEach(function (item) {
-                item.style.backgroundColor = "#292B4A";
-                item.style.color = "white";
-            });
+				item.style.backgroundColor = "#292B4A";
+				item.style.color = "white";
+			});
 
-            // Change icon to sun
-            icon.classList.remove("fa-moon");
-            icon.classList.add("fa-sun");
-        } else {
-            // Disable dark mode
-            bodyElement.style.backgroundColor = "";
-            bodyElement.style.color = "";
-            if (modal) modal.style.backgroundColor = "";
-            if (chatElement) chatElement.style.backgroundColor = "";
-            if (chatElement) chatElement.style.color = "";
-            if (sidenavElement) sidenavElement.style.backgroundColor = "";
-            if (sidenavElement) sidenavElement.style.color = "";
-            if (faqs) faqs.style.backgroundColor = "";
-            changeCssButton.style.color = "black";
+			// Change icon to sun
+			icon.classList.remove("fa-moon");
+			icon.classList.add("fa-sun");
+		} else {
+			// Disable dark mode
+			bodyElement.style.backgroundColor = "";
+			bodyElement.style.color = "";
+			if (modal) modal.style.backgroundColor = "";
+			if (chatElement) chatElement.style.backgroundColor = "";
+			if (chatElement) chatElement.style.color = "";
+			if (sidenavElement) sidenavElement.style.backgroundColor = "";
+			if (sidenavElement) sidenavElement.style.color = "";
+			if (faqs) faqs.style.backgroundColor = "";
+			changeCssButton.style.color = "black";
 			graphPlotterButton.style.color = ""; // Reset to default
-            chatBotButton.style.color = ""; // Reset to default
+			aboutusbutton.style.color = ""; // Reset to default
+			chatBotButton.style.color = ""; // Reset to default
 
 			faqItems.forEach(function (item) {
-                item.style.backgroundColor = "";
-                item.style.color = "";
-            });
+				item.style.backgroundColor = "";
+				item.style.color = "";
+			});
 
-            // Change icon to moon
-            icon.classList.remove("fa-sun");
-            icon.classList.add("fa-moon");
-        }
-    });
+			// Change icon to moon
+			icon.classList.remove("fa-sun");
+			icon.classList.add("fa-moon");
+		}
+	});
 });
 
 document.addEventListener('DOMContentLoaded', function () {
-    const recordBtn = document.getElementById('recordBtn');
-    const stopBtn = document.getElementById('stopBtn');
-    const textInput = document.getElementById('text');
+	const recordBtn = document.getElementById('recordBtn');
+	const stopBtn = document.getElementById('stopBtn');
+	const textInput = document.getElementById('text');
 
-    let recognition;
-    let isRecording = false;
+	let recognition;
+	let isRecording = false;
 
-    // Check for browser support
-    if (!('webkitSpeechRecognition' in window)) {
-        alert('Your browser does not support speech recognition. Try using Chrome.');
-    } else {
-        recognition = new webkitSpeechRecognition();
-        recognition.continuous = true;
-        recognition.interimResults = true;
-        recognition.lang = 'en-US';
+	// Check for browser support
+	if (!('webkitSpeechRecognition' in window)) {
+		alert('Your browser does not support speech recognition. Try using Chrome.');
+	} else {
+		recognition = new webkitSpeechRecognition();
+		recognition.continuous = true;
+		recognition.interimResults = true;
+		recognition.lang = 'en-US';
 
-        recognition.onstart = function () {
-            isRecording = true;
-            recordBtn.style.display = 'none';
-            stopBtn.style.display = 'inline';
-        };
+		recognition.onstart = function () {
+			isRecording = true;
+			recordBtn.style.display = 'none';
+			stopBtn.style.display = 'inline';
+		};
 
-        recognition.onresult = function (event) {
-            let interimTranscript = '';
-            let finalTranscript = '';
+		recognition.onresult = function (event) {
+			let interimTranscript = '';
+			let finalTranscript = '';
 
-            for (let i = event.resultIndex; i < event.results.length; ++i) {
-                if (event.results[i].isFinal) {
-                    finalTranscript += event.results[i][0].transcript;
-                } else {
-                    interimTranscript += event.results[i][0].transcript;
-                }
-            }
+			for (let i = event.resultIndex; i < event.results.length; ++i) {
+				if (event.results[i].isFinal) {
+					finalTranscript += event.results[i][0].transcript;
+				} else {
+					interimTranscript += event.results[i][0].transcript;
+				}
+			}
 
-            textInput.value = finalTranscript + interimTranscript;
-        };
+			textInput.value = finalTranscript + interimTranscript;
+		};
 
-        recognition.onerror = function (event) {
-            console.error('Speech recognition error', event);
-        };
+		recognition.onerror = function (event) {
+			console.error('Speech recognition error', event);
+		};
 
-        recognition.onend = function () {
-            isRecording = false;
-            recordBtn.style.display = 'inline';
-            stopBtn.style.display = 'none';
-        };
-    }
+		recognition.onend = function () {
+			isRecording = false;
+			recordBtn.style.display = 'inline';
+			stopBtn.style.display = 'none';
+		};
+	}
 
-    recordBtn.addEventListener('click', function () {
-        if (isRecording) {
-            recognition.stop();
-            return;
-        }
-        recognition.start();
-    });
+	recordBtn.addEventListener('click', function () {
+		if (isRecording) {
+			recognition.stop();
+			return;
+		}
+		recognition.start();
+	});
 
-    stopBtn.addEventListener('click', function () {
-        if (isRecording) {
-            recognition.stop();
-        }
-    });
+	stopBtn.addEventListener('click', function () {
+		if (isRecording) {
+			recognition.stop();
+		}
+	});
 });
 
 // ***************************************QUESTIONS HINT SECTION****************************************
 function copyToClipboard(text) {
 	const regex = /^\d+/;
-    if (regex.test(text)) {
-        text = text.substring(3);
-    }
-	navigator.clipboard.writeText(text).then(function() {
+	if (regex.test(text)) {
+		text = text.substring(3);
+	}
+	navigator.clipboard.writeText(text).then(function () {
 		alert('Copied to clipboard: ' + text);
-	}, function(err) {
+	}, function (err) {
 		console.error('Could not copy text: ', err);
 	});
 }
@@ -226,9 +229,9 @@ $(document).ready(function () {
 		const str_time = hour + ":" + minute;
 		var rawText = $("#text").val();
 
-		var userHtml = '<div class="d-flex justify-content-end mb-4"><div class="msg_cotainer_send">' + rawText + 
-		'<span class="msg_time_send">' + str_time + 
-		'</span></div><div class="img_cont_msg"><img src="../static/user_img.png" class="rounded-circle user_img_msg"></div></div>';
+		var userHtml = '<div class="d-flex justify-content-end mb-4"><div class="msg_cotainer_send">' + rawText +
+			'<span class="msg_time_send">' + str_time +
+			'</span></div><div class="img_cont_msg"><img src="../static/user_img.png" class="rounded-circle user_img_msg"></div></div>';
 
 		$("#text").val("");
 		$("#messageFormeight").append(userHtml);
@@ -308,114 +311,114 @@ $(document).ready(function () {
 
 // ***************************************SELECT TABLE****************************************
 $(document).ready(function () {
-    $('#select_table').click(function () {
-        $.ajax({
-            type: 'GET',
-            url: '/listTable',
-            contentType: 'application/json',
-            success: function (response) {
-                let data = response;
-                console.log(data);
-                populateselectModal(data);
-            }
-        });
-    });
+	$('#select_table').click(function () {
+		$.ajax({
+			type: 'GET',
+			url: '/listTable',
+			contentType: 'application/json',
+			success: function (response) {
+				let data = response;
+				console.log(data);
+				populateselectModal(data);
+			}
+		});
+	});
 });
 
 function populateselectModal(data) {
-    let modalBody = $('#table_modal_body');
-    modalBody.empty(); // Clear previous items
+	let modalBody = $('#table_modal_body');
+	modalBody.empty(); // Clear previous items
 
-    data.forEach(itemArray => {
-        if (itemArray.length > 0) {
-            let item = itemArray[0]; // Assuming each array contains a single item
-            console.log(item);
-            
-            // Create a div for each item
-            let itemDiv = $('<div class="mb-2">');
-            
-            // Create a link with a download icon (using Font Awesome as an example)
-            let downloadIcon = $('<i class="fas fa-download mr-2"></i>');
-            let itemName = $('<span>').text(item);
-            let downloadLink = $('<div class="btn btn-outline-primary btn-sm">')
-                                .append(downloadIcon)
-                                .append(itemName);
-            
-			downloadLink.click(function(event) {
+	data.forEach(itemArray => {
+		if (itemArray.length > 0) {
+			let item = itemArray[0]; // Assuming each array contains a single item
+			console.log(item);
+
+			// Create a div for each item
+			let itemDiv = $('<div class="mb-2">');
+
+			// Create a link with a download icon (using Font Awesome as an example)
+			let downloadIcon = $('<i class="fas fa-download mr-2"></i>');
+			let itemName = $('<span>').text(item);
+			let downloadLink = $('<div class="btn btn-outline-primary btn-sm">')
+				.append(downloadIcon)
+				.append(itemName);
+
+			downloadLink.click(function (event) {
 				event.preventDefault();
 				let tableName = item;
 				selectTableFunction(tableName);
 			});
-            // Append download link to item div
-            itemDiv.append(downloadLink);
-            
-            // Append item div to modal body
-            modalBody.append(itemDiv);
-        }
-    });
+			// Append download link to item div
+			itemDiv.append(downloadLink);
+
+			// Append item div to modal body
+			modalBody.append(itemDiv);
+		}
+	});
 }
 
 function selectTableFunction(tableName) {
-    // Make AJAX call to Python backend endpoint
-    $.ajax({
-        type: 'POST',
-        url: '/selectTable', // Replace with your backend endpoint URL
-        contentType: 'application/json',
-        data: JSON.stringify({ tableName: tableName }),
-        success: function(response) {
-            console.log('Selected successfully.');
-            // Handle success response if needed
-        },
-        error: function(xhr, status, error) {
-            console.error('Error calling Python function:', error);
-            // Handle error response if needed
-        }
-    });
+	// Make AJAX call to Python backend endpoint
+	$.ajax({
+		type: 'POST',
+		url: '/selectTable', // Replace with your backend endpoint URL
+		contentType: 'application/json',
+		data: JSON.stringify({ tableName: tableName }),
+		success: function (response) {
+			console.log('Selected successfully.');
+			// Handle success response if needed
+		},
+		error: function (xhr, status, error) {
+			console.error('Error calling Python function:', error);
+			// Handle error response if needed
+		}
+	});
 }
 
 
 // ***************************************DOWNLOAD TABLE****************************************
 $(document).ready(function () {
-    $('#list_table').click(function () {
-        $.ajax({
-            type: 'GET',
-            url: '/listTable',
-            contentType: 'application/json',
-            success: function (response) {
-                let data = response;
-                console.log(data);
-                populateDownloadModal(data);
-            }
-        });
-    });
+	$('#list_table').click(function () {
+		$.ajax({
+			type: 'GET',
+			url: '/listTable',
+			contentType: 'application/json',
+			success: function (response) {
+				let data = response;
+				console.log(data);
+				populateDownloadModal(data);
+			}
+		});
+	});
 });
 
 function populateDownloadModal(data) {
 	let modalBody = $('#Dtable_modal_body');
 	modalBody.empty(); // Clear previous items
-	
+
 	// Iterate over each table item in data
 	data.forEach(itemArray => {
 		if (itemArray.length > 0) {
 			let item = itemArray[0]; // Assuming each array contains a single item (table name)
-			
+
 			// Create a div for each item
 			let itemDiv = $('<div class="mb-2">');
-			
+
 			// Create a link with a download icon (using Font Awesome as an example)
 			let downloadIcon = $('<i class="fas fa-download mr-2"></i>');
 			let itemName = $('<span>').text(item);
 			let downloadLink = $('<a class="btn btn-outline-primary btn-sm">').append(downloadIcon).append(itemName);
-			
-			downloadLink.click(function(event) {
+
+			downloadLink.click(function (event) {
 				event.preventDefault();
 				let tableName = item;
 				selectTableFunction(tableName);
 			});
-			
+
 			// Append download link to item div
 			itemDiv.append(downloadLink);
-			
+
 			// Append item div to modal body
 			modalBody.append(itemDiv);
 		}
@@ -435,34 +438,34 @@ function updateGraphImage() {
 
 	// Update the image src
 	imgElement.src = newSrc;
-  }
+}
 
 function pollForChanges() {
-setInterval(function () {
-	updateGraphImage();
-	// console.log(i++)
-}, 5000); // 5000 milliseconds = 5 seconds
+	setInterval(function () {
+		updateGraphImage();
+		// console.log(i++)
+	}, 5000); // 5000 milliseconds = 5 seconds
 }
 
 $(document).ready(function () {
 	$("#graphinput").on("submit", function (event) {
-	  event.preventDefault();
+		event.preventDefault();
 
-	  var rawText = $("#text").val();
+		var rawText = $("#text").val();
 
-	  // Clear the input field
-	  $("#text").val("");
-	  pollForChanges();
-	  // Send the input text to the API
-	  $.ajax({
-		data: {
-		  msg: rawText,
-		},
-		type: "POST",
-		url: "/graphy",
-	  }).done(function (response) {
-		// Handle the response from the API if needed
-		console.log(response);
-	  });
+		// Clear the input field
+		$("#text").val("");
+		pollForChanges();
+		// Send the input text to the API
+		$.ajax({
+			data: {
+				msg: rawText,
+			},
+			type: "POST",
+			url: "/graphy",
+		}).done(function (response) {
+			// Handle the response from the API if needed
+			console.log(response);
+		});
 	});
-  });
+});
