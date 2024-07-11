@@ -76,74 +76,6 @@ document.getElementById('fileInput2').addEventListener('change', function () {
 	}
 });
 
-document.addEventListener("DOMContentLoaded", function () {
-	var isToggled = false; // Variable to track the state
-
-	var changeCssButton = document.getElementById("changeCssButton");
-	var icon = document.getElementById("icon");
-	var bodyElement = document.querySelector('body');
-	var chatElement = document.querySelector('.card');
-	var sidenavElement = document.querySelector('.sidenav');
-	var faqs = document.querySelector('.faq-section');
-	var graphPlotterButton = document.querySelector('a[href="/graphy"]');
-	var chatBotButton = document.querySelector('a[href="/"]');
-	var aboutusbutton = document.querySelector('a[href="/about"]');
-	var modal = document.querySelector('.modal-content');
-	var faqItems = document.querySelectorAll('.list-group-item');
-
-	changeCssButton.addEventListener("click", function () {
-		isToggled = !isToggled;
-
-		if (isToggled) {
-			// Enable dark mode
-			bodyElement.style.backgroundColor = "070F2B";
-			bodyElement.style.color = "#f7f8fc";
-			if (modal) modal.style.backgroundColor = "070F2B";
-			if (chatElement) chatElement.style.backgroundColor = "070F2B";
-			if (chatElement) chatElement.style.color = "#f7f8fc";
-			if (sidenavElement) sidenavElement.style.backgroundColor = "070F2B";
-			if (sidenavElement) sidenavElement.style.color = "white";
-			if (faqs) faqs.style.backgroundColor = "535C91";
-			changeCssButton.style.color = "white";
-			graphPlotterButton.style.color = "#FF9EAA"; // Adjust as needed
-			aboutusbutton.style.color = "#FF9EAA"; // Adjust as needed
-			chatBotButton.style.color = "#FF9EAA"; // Adjust as needed
-
-			faqItems.forEach(function (item) {
-				item.style.backgroundColor = "#292B4A";
-				item.style.color = "white";
-			});
-
-			// Change icon to sun
-			icon.classList.remove("fa-moon");
-			icon.classList.add("fa-sun");
-		} else {
-			// Disable dark mode
-			bodyElement.style.backgroundColor = "";
-			bodyElement.style.color = "";
-			if (modal) modal.style.backgroundColor = "";
-			if (chatElement) chatElement.style.backgroundColor = "";
-			if (chatElement) chatElement.style.color = "";
-			if (sidenavElement) sidenavElement.style.backgroundColor = "";
-			if (sidenavElement) sidenavElement.style.color = "";
-			if (faqs) faqs.style.backgroundColor = "";
-			changeCssButton.style.color = "black";
-			graphPlotterButton.style.color = ""; // Reset to default
-			aboutusbutton.style.color = ""; // Reset to default
-			chatBotButton.style.color = ""; // Reset to default
-
-			faqItems.forEach(function (item) {
-				item.style.backgroundColor = "";
-				item.style.color = "";
-			});
-
-			// Change icon to moon
-			icon.classList.remove("fa-sun");
-			icon.classList.add("fa-moon");
-		}
-	});
-});
-
 document.addEventListener('DOMContentLoaded', function () {
 	const recordBtn = document.getElementById('recordBtn');
 	const stopBtn = document.getElementById('stopBtn');
@@ -243,7 +175,7 @@ $(document).ready(function () {
 			type: "POST",
 			url: "/get",
 		}).done(function (responses) {
-			console.log(responses)
+			// console.log(responses)
 			var botHtml = '<div class="d-flex justify-content-start mb-4">';
 			botHtml += '<div class="img_cont_msg"><img src="../static/Wrapper@3x.png" class="rounded-circle user_img_msg"></div>';
 			botHtml += '<div class="msg_cotainer">';
@@ -265,47 +197,63 @@ $(document).ready(function () {
 		event.preventDefault();
 	});
 });
-$(document).ready(function () {
-	$('#show_table').click(function () {
-		$.ajax({
-			type: 'POST',
-			url: '/show',
-			contentType: 'application/json',
-			success: function (response) {
-				let data = response.output_value;
 
-				const container = document.getElementById('output');
-				container.innerHTML = '';
-				// Loop through the data and create tables
-				for (const [tableName, rows] of Object.entries(data)) {
-					// Create a container for each table and title
-					const tableContainer = document.createElement('div');
+$('#show_table').click(function () {
+	$.ajax({
+		type: 'POST',
+		url: '/show',
+		contentType: 'application/json',
+		success: function (response) {
+			let data = response.output_value;
 
-					const table = document.createElement('table');
-					const headerRow = table.insertRow();
+			const container = document.getElementById('output');
+			container.innerHTML = '';
+			// Loop through the data and create tables
+			for (const [tableName, rows] of Object.entries(data)) {
+				// Create a container for each table and title
+				const tableContainer = document.createElement('div');
+				tableContainer.className = 'table-container';
+				tableContainer.dataset.tableName = tableName.toLowerCase();
 
-					// Create table rows
-					for (const row of rows) {
-						const newRow = table.insertRow();
-						for (const cellData of row) {
-							const cell = newRow.insertCell();
-							cell.textContent = cellData;
-						}
+				const table = document.createElement('table');
+				table.id = `table_${tableName}`;
+				const headerRow = table.insertRow();
+
+				// Create table rows
+				for (const row of rows) {
+					const newRow = table.insertRow();
+					for (const cellData of row) {
+						const cell = newRow.insertCell();
+						cell.textContent = cellData;
+						if (localStorage.getItem('darkMode') === 'enabled')
+							cell.style.border="1px solid #fff";
 					}
-
-					// Set table title
-					const title = document.createElement('h2');
-					title.textContent = tableName;
-
-					// Append the title and table to the container for this table
-					tableContainer.appendChild(title);
-					tableContainer.appendChild(table);
-
-					// Append the container for this table to the main container
-					container.appendChild(tableContainer);
 				}
+
+				// Set table title
+				const title = document.createElement('h2');
+				title.textContent = tableName;
+
+				// Append the title and table to the container for this table
+				tableContainer.appendChild(title);
+				tableContainer.appendChild(table);
+
+				// Append the container for this table to the main container
+				container.appendChild(tableContainer);
 			}
-		});
+		}
+	});
+});
+
+$('#filter_input').on('input', function () {
+	const filterValue = $(this).val().toLowerCase();
+	$('.table-container').each(function () {
+		const tableName = $(this).data('tableName');
+		if (tableName.includes(filterValue)) {
+			$(this).show();
+		} else {
+			$(this).hide();
+		}
 	});
 });
 
@@ -318,7 +266,7 @@ $(document).ready(function () {
 			contentType: 'application/json',
 			success: function (response) {
 				let data = response;
-				console.log(data);
+				// console.log(data);
 				populateselectModal(data);
 			}
 		});
@@ -332,7 +280,7 @@ function populateselectModal(data) {
 	data.forEach(itemArray => {
 		if (itemArray.length > 0) {
 			let item = itemArray[0]; // Assuming each array contains a single item
-			console.log(item);
+			// console.log(item);
 
 			// Create a div for each item
 			let itemDiv = $('<div class="mb-2">');
@@ -386,7 +334,7 @@ $(document).ready(function () {
 			contentType: 'application/json',
 			success: function (response) {
 				let data = response;
-				console.log(data);
+				// console.log(data);
 				populateDownloadModal(data);
 			}
 		});
@@ -465,7 +413,7 @@ $(document).ready(function () {
 			url: "/graphy",
 		}).done(function (response) {
 			// Handle the response from the API if needed
-			console.log(response);
+			// console.log(response);
 		});
 	});
 });

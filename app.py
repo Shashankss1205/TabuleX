@@ -14,6 +14,7 @@ import subprocess
 
 # load_dotenv()
 # GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
+GOOGLE_API_KEY = "AIzaSyAQCjr0tG92ET84s79YAfXTzte5aLj0c7E"
 # Load google api key
 
 app = Flask(__name__)
@@ -49,9 +50,9 @@ def question_generator():
     prompt = f"Write 10-15 Natural language questions to ask related to the tables {table_col_combo}. Pre exisiting tables and their columns are {table_col_combo}.Dont make random columns on your own. Just write the lines no extra text"
     response = model.generate_content(prompt)
     reply = response.text
-    print(reply)
+    # print(reply)
     ques_list = [line.strip() for line in reply.strip().split('\n')]          
-    print(ques_list)
+    # print(ques_list)
     return ques_list
 items= question_generator()
 
@@ -88,10 +89,10 @@ def chatbot(input):
         extracted_content = re.findall(r"```sqlite(.*?)```", reply, re.DOTALL) or re.findall(r"```sql(.*?)```", reply, re.DOTALL) or re.findall(r"```(.*?)```", reply, re.DOTALL) 
         responses = []
         collector(input)
-        print(extracted_content)
+        # print(extracted_content)
         for content in extracted_content:
             reply = content.strip()
-            print(reply)
+            # print(reply)
             response = execute_sql(reply)
             responses.append(response)            
         return responses
@@ -107,7 +108,7 @@ def graphplot(input):
         # prompt = "Write a story about a magic backpack."
         prompt = f"Write a PYTHON command for {input} and dataframe is named 'output.csv'. Pre exisiting tables and their columns are {table_col_combo}. Pre-existing chats are {history[0]}. Dont make random columns on your own and try to use columns with highest co-relation when asked to alter something, Do not forget to put column names in double quotes if the column has 2 words in it.Only use Matplotlib, pandas, numpy for creating the graphs. save the image plot as 'static/graph.png'"
         
-        print(f"Write a PYTHON command to {input} if the table and their columns are {table_col_combo}  Pre-existing chats are {history[0]}.")
+        print(prompt)
         response = model.generate_content(prompt)
         reply = response.text
         print(reply)
@@ -124,7 +125,7 @@ def process_table_download(table_name):
     df = pd.read_sql_query(query, conn)
     df.to_csv('output.csv', index=False)
     conn.close()
-    print("Table data has been written to output.csv")
+    # print("Table data has been written to output.csv")
     return {'status': 'success'}
 
 def get_db_connection():
@@ -139,28 +140,28 @@ def execute_sql(sql_command):
 
     # Print the list of SQL commands
     for sql_command in sql_commands:
-        print(sql_command)
+        # print(sql_command)
         # Check if the SQL command is a SELECT statement
         is_select_query = sql_command.strip().upper().startswith('SELECT')
         cursor.execute(sql_command)
         # # If it's a SELECT statement, fetch and return the query result
         if is_select_query:
             tables = cursor.fetchall()
-            print(tables)
+            # print(tables)
             conn.commit()
 
         else:
             cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
             tables = f"Tables Available: {cursor.fetchall()}"
             conn.commit()
-    print(tables)
+    # print(tables)
     return tables
 
 def subproc(new_file_content):
     with open('dynamic_script.py', 'w') as file:
         file.write(new_file_content)
 
-    print("dynamic_script.py created.")
+    # print("dynamic_script.py created.")
     # activate_script = os.path.join('myenv', 'Scripts', 'activate')
     # activate_cmd = f'call "{activate_script}"'
     # subprocess.run(activate_cmd, shell=True, check=True)
@@ -193,19 +194,19 @@ def about():
 @app.route("/get", methods=["GET", "POST"])
 def chat():
     input = request.form["msg"]
-    print("Input: " + input)
+    # print("Input: " + input)
     responses = chatbot(input)
-    print(responses)
-    print(type(responses))
+    # print(responses)
+    # print(type(responses))
     return responses
 
 @app.route("/graphy", methods=["POST"])
 def graphy():
     input = request.form["msg"]
-    print("Input: " + input)
+    # print("Input: " + input)
     responses = graphplot(input)
-    print(responses)
-    print(type(responses))
+    # print(responses)
+    # print(type(responses))
     return responses
 
 @app.route("/listTable", methods=["GET"])
@@ -252,7 +253,7 @@ def upload():
     image = Image.open(BytesIO(file.read()))
     genai.configure(api_key=GOOGLE_API_KEY)
     imgmodel = genai.GenerativeModel('gemini-pro-vision')
-    print(imgmodel)
+    # print(imgmodel)
     print(f"Write an SQLite command to add the table heads along with the input data present in the image. Dont make random columns on your own. You are warned : Never compromise the SQL syntax according to the input")
     response = imgmodel.generate_content([f"Write an SQLite command in code blocks like ```sql ........ ``` to add the table heads along with the input data present in the image. Dont make random columns on your own. Dont give table names from the list : {table_col_combo}. You are warned : Never compromise the SQL syntax according to the input", image], stream=True)
     response.resolve()
@@ -262,10 +263,10 @@ def upload():
     extracted_content = re.findall(r"```sqlite(.*?)```", reply, re.DOTALL) or re.findall(r"```SQLITE(.*?)```", reply, re.DOTALL) or re.findall(r"```sql(.*?)```", reply, re.DOTALL) or re.findall(r"```SQL(.*?)```", reply, re.DOTALL) 
             # or re.findall(r"```(.*?)```", reply, re.DOTALL) 
     responses = []
-    print(extracted_content)
+    # print(extracted_content)
     for content in extracted_content:
         reply = content.strip()
-        print(reply)
+        # print(reply)
         response = execute_sql(reply)
         responses.append(response)            
     return responses
@@ -311,7 +312,7 @@ def show_file():
         data[table] = table_data
     conn.close()
     # print(data)
-    print(type(data))
+    # print(type(data))
     return jsonify({'output_value': data})
 
 
