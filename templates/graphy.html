@@ -162,7 +162,98 @@
         </div>
       </div>
     </div>
-    <div class="container mt-5">
+    <div class="container-fluid">
+      <div class="row" style="height: 48vh">
+        <div class="col-lg-8 col-md-12" style="height: 150%">
+          <div class="row justify-content-center">
+            <div class="col-md-8">
+              <form id="graphinput" class="input-group">
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  id="select_table"
+                  data-toggle="modal"
+                  data-target="#selectTableModal"
+                >
+                  Select Table
+                </button>
+                <input
+                  type="text"
+                  id="text"
+                  name="msg"
+                  placeholder="Select a Table & Ask a Question..."
+                  autocomplete="off"
+                  class="form-control"
+                />
+                <div class="input-group-append">
+                  <button id="recordBtn">
+                    <i class="fas fa-microphone btn_css"></i>
+                  </button>
+                  <button id="stopBtn" style="display: none">
+                    <i class="fas fa-stop btn_css"></i>
+                  </button>
+                  <!-- <button type="submit" id="send" class="btn btn-primary">
+                    Send
+                  </button> -->
+                  <button
+                        type="submit"
+                        id="send"
+                        class="input-group-text send_btn"
+                      >
+                        <i class="fas fa-location-arrow"></i>
+                      </button>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="row justify-content-center mt-3">
+            <div class="col-md-8 text-center">
+              <img id="graphImage" src="../static/graph.png" class="img-fluid" />
+              <br />
+              <br />
+              <a
+                href="{{ url_for('Download_Graph') }}"
+                class="btn btn-danger"
+                style="color: black"
+                ><b>Download the Plot</b></a
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-12 mt-4 mt-lg-0">
+          <div class="faq-section">
+            <h4>Chart Types</h4>
+            <div class="scrollable-container">
+              <div class="row">
+                {% for image in images %}
+                <div class="col-md-4 mb-4">
+                  <div class="image-item">
+                    <div class="image-container">
+                      <img src="{{ image.url }}" alt="{{ image.caption }}" class="img-fluid" style="height: 100px;">
+                      <button
+                  class="copy-btn"
+                  onclick="copyToClipboard('Draw a {{ image.caption }} for the following table.')"
+                >
+                  <p class="caption" style="color: rgb(212, 13, 113);"><i class="fas fa-copy"></i> {{ image.caption }}</p>
+                </button>
+                      <div class="overlay">
+                        <p class="description">{{ image.description }}</p>
+                      </div>
+                    </div>
+                    
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        
+      </div>
+    </div>
+    <!-- <div class="container mt-5">
       <div class="row justify-content-center">
         <div class="col-md-8">
           <form id="graphinput" class="input-group">
@@ -190,9 +281,6 @@
               <button id="stopBtn" style="display: none">
                 <i class="fas fa-stop btn_css"></i>
               </button>
-              <!-- <button type="submit" id="send" class="btn btn-primary">
-                Send
-              </button> -->
               <button
                     type="submit"
                     id="send"
@@ -217,7 +305,7 @@
           >
         </div>
       </div>
-    </div>
+    </div> -->
 
     <div
       id="targetElement"

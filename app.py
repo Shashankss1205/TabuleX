@@ -20,6 +20,26 @@ app = Flask(__name__)
 CORS(app)
 db_name = "mydatabase.db"
 history = ['Good tabular data analysis agent']
+
+# **************************************Images of graphs*******************************************
+images = [
+    {"url": "./static/charts/bar_chart.png", "caption": "Bar Chart", "description": "Compare data across categories using rectangular bars."},
+    {"url": "./static/charts/line_chart.png", "caption": "Line Chart", "description": "Show trends over time with connected data points."},
+    {"url": "./static/charts/donut_chart.png", "caption": "Donut Chart", "description": "Represent proportions of each category as slices of a circle."},
+    {"url": "./static/charts/scatterplot.png", "caption": "Scatterplot", "description": "Display relationships between two variables on a two-dimensional plane."},
+    {"url": "./static/charts/area_chart.png", "caption": "Area Chart", "description": "Show volume or magnitude of data over time by filling the area between the line and X-axis."},
+    {"url": "./static/charts/bubble_chart.png", "caption": "Bubble Chart", "description": "Display relationships between three variables using bubble sizes."},
+    {"url": "./static/charts/histogram.png", "caption": "Histogram", "description": "Show data distribution across equal intervals."},
+    {"url": "./static/charts/heatmap.png", "caption": "Heatmap", "description": "Display relationships between two variables using color intensity in a matrix."},
+    {"url": "./static/charts/treemap.png", "caption": "Treemap", "description": "Represent hierarchical data with nested rectangles proportional to their value."},
+    {"url": "./static/charts/radar_chart.png", "caption": "Radar Chart", "description": "Display performance or characteristics across multiple dimensions with a circular layout."},
+    {"url": "./static/charts/box_plot.png", "caption": "Box Plot", "description": "Show data distribution and detect outliers with a rectangular box and whiskers."},
+    {"url": "./static/charts/stacked_bar_chart.png", "caption": "Stacked Bar Chart", "description": "Compare data across categories and show composition with stacked rectangular bars."},
+    {"url": "./static/charts/gantt_chart.png", "caption": "Gantt Chart", "description": "Visualize project schedules, tasks, and milestones with horizontal bars representing duration."},
+    {"url": "./static/charts/waterfall_chart.png", "caption": "Waterfall Chart", "description": "Visualize cumulative effects of sequential data with vertical bars showing positive and negative values."},
+    {"url": "./static/charts/funnel_chart.png", "caption": "Funnel Chart", "description": "Visualize stages of a process using decreasing trapezoids."}
+]
+
 # **************************************Helper Functions*******************************************
 def combo():
     conn = sqlite3.connect(db_name)
@@ -183,7 +203,7 @@ def index():
 
 @app.route("/graphy")
 def graphPlot():
-    return render_template('graphy.html')
+    return render_template('graphy.html', images = images)
 
 @app.route("/about")
 def about():

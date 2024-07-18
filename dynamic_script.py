@@ -1,18 +1,13 @@
-import matplotlib.pyplot as plt
 import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
 
-# Read the sales data
-sales = pd.read_csv('output.csv')
+# Read the data from the CSV file
+df = pd.read_csv('output.csv')
 
-# Create a scatter plot of sales over time
-plt.scatter(sales['date_of_purchase'], sales['purchase_number'])
+# Create a donut chart of the data
+plt.pie(df['Fraction'], labels=df['Segment'], autopct='%1.1f%%')
+plt.title('Donut Chart of Customer Segments')
 
-# Label the axes
-plt.xlabel('Date of Purchase')
-plt.ylabel('Purchase Number')
-
-# Set a title for the plot
-plt.title('Sales Over Time')
-
-# Save the plot as a PNG image
+# Save the plot as a PNG file
 plt.savefig('static/graph.png')

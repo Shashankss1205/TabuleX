@@ -1,7 +1,7 @@
 body,html{
 	/* height: 100%; */
 	margin: 0;
-	background-color: FFF9D0;
+	background-color: #FFF9D0;
 }
 
 .btn-danger{
@@ -127,6 +127,12 @@ th, td {
 tr:hover {
 	background-color: #f5f5f5; /* Optional: Highlight rows on hover */
 }
+
+.scrollable-container {
+	max-height: 100%; /* Adjust based on your needs */
+	overflow-y: auto; /* Enable vertical scrolling */
+	margin-right: 10px;
+  }
 
 /* ***********************************key Buttons************************************************* */
 .add_image{
