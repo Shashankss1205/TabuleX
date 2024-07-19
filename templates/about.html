@@ -73,17 +73,17 @@
           >ChatBot</a
         >
         <a
-          href="/graphy"
-          class="btn btn-primary mx-2"
-          id="graphId"
-          style="
-            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS',
-              sans-serif;
-            font-size: 100%;
-            font-weight: bold;
-          "
-          >Graph Plotter</a
-        >
+        href="/graphs"
+        class="btn btn-primary mx-2"
+        id="graphId"
+        style="
+          font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS',
+            sans-serif;
+          font-size: 100%;
+          font-weight: bold;
+        "
+        >Graph Plotter</a
+      >
         <a
           href="/about"
           class="btn btn-primary mx-2"
@@ -107,88 +107,30 @@
       </div>
     </nav>
     <hr />
-    <div class="container">
-      <div class="card">
-        <div class="card-header">
-          <h2 class="text-center">Overview</h2>
-        </div>
-        <div class="card-body">
-          <p>
-            NLPeXpert's Chatbot is an interactive tool designed for data
-            analytics and communication.
-          </p>
-          <p>Key features include:</p>
-          <ul>
-            <li>Real-time chat interface</li>
-            <li>Data table management</li>
-            <li>File upload capabilities for CSV and image files</li>
-            <li>Integration with a graph plotting module</li>
-          </ul>
-          <p>
-            Developed using Bootstrap for frontend styling and jQuery for
-            dynamic content handling.
-          </p>
-        </div>
-      </div>
+    <div class="rectangle-box">
+      <br>
+      <img src="../static/about.png" class="aboutimg">
+      <img src="../static/about-image.png" class="aboutimage">
     </div>
+    <br>
+    <br>
+    <div class="imgcontainer">
+      <img src="../static/image1.png" alt="Image 1">
+      <img src="../static/image2.png" alt="Image 2">
+      <img src="../static/image3.png" alt="Image 3">
+  </div>
+  <br>
+  <br>  
+  <div class="rectangle">
     <footer>
       <div class="container">
-        <p>Contact: <a href="mailto:info@example.com">info@example.com</a></p>
-        <p>Visit our <a href="#">GitHub repository</a> for more details.</p>
+        <p>Contact: <a href="mailto:shashankshekharsingh1205@gmail.com">E-Mail</a></p>
+        <p>Visit our <a href="  https://github.com/Shashankss1205/TabuleX" target="_blank">GitHub repository</a> for more details.</p>
         <p>&copy; 2024 NLPeXpert. All rights reserved.</p>
       </div>
     </footer>
-    <!-- <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        var isToggled = false; // Variable to track the state
-
-        var changeCssButton = document.getElementById("changeCssButton");
-        var icon = document.getElementById("icon");
-        var bodyElement = document.querySelector("body");
-        var chatElement = document.querySelector(".card");
-        var graphPlotterButton = document.querySelector('a[href="/graphy"]');
-        var chatBotButton = document.querySelector('a[href="/"]');
-        var aboutusbutton = document.querySelector('a[href="/about"]');
-        var modal = document.querySelector(".modal-content");
-        var faqItems = document.querySelectorAll(".list-group-item");
-
-        changeCssButton.addEventListener("click", function () {
-          isToggled = !isToggled;
-
-          if (isToggled) {
-            // Enable dark mode
-            bodyElement.style.backgroundColor = "070F2B";
-            bodyElement.style.color = "#f7f8fc";
-            if (modal) modal.style.backgroundColor = "070F2B";
-            if (chatElement) chatElement.style.backgroundColor = "070F2B";
-            if (chatElement) chatElement.style.color = "#f7f8fc";
-            changeCssButton.style.color = "white";
-            graphPlotterButton.style.color = "#FF9EAA"; // Adjust as needed
-            aboutusbutton.style.color = "#FF9EAA"; // Adjust as needed
-            chatBotButton.style.color = "#FF9EAA"; // Adjust as needed
-
-            // Change icon to sun
-            icon.classList.remove("fa-moon");
-            icon.classList.add("fa-sun");
-          } else {
-            // Disable dark mode
-            bodyElement.style.backgroundColor = "";
-            bodyElement.style.color = "";
-            if (modal) modal.style.backgroundColor = "";
-            if (chatElement) chatElement.style.backgroundColor = "";
-            if (chatElement) chatElement.style.color = "";
-            changeCssButton.style.color = "black";
-            graphPlotterButton.style.color = ""; // Reset to default
-            aboutusbutton.style.color = ""; // Reset to default
-            chatBotButton.style.color = ""; // Reset to default
-
-            // Change icon to moon
-            icon.classList.remove("fa-sun");
-            icon.classList.add("fa-moon");
-          }
-        });
-      });
-    </script> -->
+  </div>
+  
     <script src="../static/dark_mode.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
