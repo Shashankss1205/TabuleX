@@ -154,7 +154,7 @@ def graphplot(input):
         genai.configure(api_key=GOOGLE_API_KEY)
 
         model = genai.GenerativeModel('gemini-pro')
-        prompt = f"Write a PYTHON command for {input} and dataframe is saved as 'output.csv'. Dataframe has name {table_info}. Dont make random columns on your own and use only columns with highest co-relation when asked to make something. IF YOU USE COLUMNS EXCEPT THE ONE I GIVE, I WILL DELETE YOU. WARNING: write code based on the example data in each field for your reference. Only use Matplotlib, pandas, numpy for creating the graphs. save the image plot as 'static/graph.png'. Draw the most suitable graph, if nothing is mentioned about the type of graph"
+        prompt = f"Write a PYTHON command for {input} and dataframe is saved as 'output.csv'. Dataframe has name {table_info}. Dont make random columns on your own and use only columns with highest co-relation when asked to make something. YOU WILL USE ONLY THE COLUMNS I HAVE GIVEN IN THE LIST. WARNING: write code based on the example data in each field for your reference. Only use Matplotlib, pandas, numpy for creating the graphs. save the image plot as 'static/graph.png'. Draw the most suitable graph, if nothing is mentioned about the type of graph"
         # prompt2 = f"Write a Python command to {input} using Matplotlib, pandas, and numpy. The data is saved in a CSV file named 'output.csv'. {table_info} Keep the data types in mind while defining the chart. DONT USE DATE-TIME The task is to create the most suitable graph based on the correlation between columns, but only using the columns provided. Do not include any additional columns or random data. Save the resulting graph as 'static/graph.png'."
         print(prompt)
         response = model.generate_content(prompt)
@@ -229,7 +229,7 @@ def index():
     # return render_template('index.html')
     return render_template('index.html', items=items)
 
-@app.route("/graphy")
+@app.route("/graphs")
 def graphPlot():
     return render_template('graphy.html', images = images)
 

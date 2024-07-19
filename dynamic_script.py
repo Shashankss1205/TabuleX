@@ -1,29 +1,20 @@
-import matplotlib.pyplot as plt
 import pandas as pd
-import numpy as np
+import matplotlib.pyplot as plt
 
-# Read the CSV file
+# Read the data from the CSV file
 df = pd.read_csv('output.csv')
 
-# Define the data types for each column
-df['Customer ID'] = df['Customer ID'].astype(str)
-df['Customer Name'] = df['Customer Name'].astype(str)
-df['Loyalty Reward Points'] = df['Loyalty Reward Points'].astype(int)
-df['Segment'] = df['Segment'].astype(str)
-df['Date'] = pd.to_datetime(df['Date'], format='%m/%d/%Y')  # Converting Date to datetime
-df['Fraction'] = df['Fraction'].astype(float)
+# Extract the data for the bar chart
+total_profit = df['total_profit']
+month_number = df['month_number']
 
-# Create a scatter plot of 'Loyalty Reward Points' vs 'Fraction'
-plt.scatter(df['Loyalty Reward Points'], df['Fraction'])
+# Create the bar chart
+plt.bar(month_number, total_profit, color=['red', 'green', 'blue', 'yellow', 'orange', 'purple', 'black'])
 
-# Add a label to the x-axis
-plt.xlabel('Loyalty Reward Points')
-
-# Add a label to the y-axis
-plt.ylabel('Fraction')
-
-# Add a title to the plot
-plt.title('Correlation between Loyalty Reward Points and Fraction')
+# Set the title and labels for the chart
+plt.title('Total Profit by Month')
+plt.xlabel('Month Number')
+plt.ylabel('Total Profit')
 
 # Save the plot as a PNG file
 plt.savefig('static/graph.png')
