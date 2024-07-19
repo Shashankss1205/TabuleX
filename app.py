@@ -1,6 +1,5 @@
 from flask import Flask, request, render_template, jsonify, send_file
 from dotenv import load_dotenv
-
 from flask_cors import CORS
 import os
 import re
@@ -20,7 +19,7 @@ app = Flask(__name__)
 CORS(app)
 db_name = "mydatabase.db"
 history = ['Good tabular data analysis agent']
-
+selected_table_graphy = ""
 # **************************************Images of graphs*******************************************
 images = [
     {"url": "./static/charts/bar_chart.png", "caption": "Bar Chart", "description": "Compare data across categories using rectangular bars."},
@@ -31,13 +30,15 @@ images = [
     {"url": "./static/charts/bubble_chart.png", "caption": "Bubble Chart", "description": "Display relationships between three variables using bubble sizes."},
     {"url": "./static/charts/histogram.png", "caption": "Histogram", "description": "Show data distribution across equal intervals."},
     {"url": "./static/charts/heatmap.png", "caption": "Heatmap", "description": "Display relationships between two variables using color intensity in a matrix."},
-    {"url": "./static/charts/treemap.png", "caption": "Treemap", "description": "Represent hierarchical data with nested rectangles proportional to their value."},
-    {"url": "./static/charts/radar_chart.png", "caption": "Radar Chart", "description": "Display performance or characteristics across multiple dimensions with a circular layout."},
+    # {"url": "./static/charts/treemap.png", "caption": "Treemap", "description": "Represent hierarchical data with nested rectangles proportional to their value."},
+    # {"url": "./static/charts/radar_chart.png", "caption": "Radar Chart", "description": "Display performance or characteristics across multiple dimensions with a circular layout."},
     {"url": "./static/charts/box_plot.png", "caption": "Box Plot", "description": "Show data distribution and detect outliers with a rectangular box and whiskers."},
     {"url": "./static/charts/stacked_bar_chart.png", "caption": "Stacked Bar Chart", "description": "Compare data across categories and show composition with stacked rectangular bars."},
     {"url": "./static/charts/gantt_chart.png", "caption": "Gantt Chart", "description": "Visualize project schedules, tasks, and milestones with horizontal bars representing duration."},
     {"url": "./static/charts/waterfall_chart.png", "caption": "Waterfall Chart", "description": "Visualize cumulative effects of sequential data with vertical bars showing positive and negative values."},
-    {"url": "./static/charts/funnel_chart.png", "caption": "Funnel Chart", "description": "Visualize stages of a process using decreasing trapezoids."}
+    # {"url": "./static/charts/funnel_chart.png", "caption": "Funnel Chart", "description": "Visualize stages of a process using decreasing trapezoids."}
+    {"url": "./static/charts/pie_chart.png", "caption": "Pie Chart", "description": "Show proportions of a whole as slices of a pie, useful for comparing part-to-whole relationships."},
+    {"url": "./static/charts/contour_plot.png", "caption": "Contour Plot", "description": "Illustrate three-dimensional data in two dimensions using contour lines to represent levels of a variable."}
 ]
 
 # **************************************Helper Functions*******************************************
@@ -61,6 +62,36 @@ def combo():
     cursor.close()
     conn.close()
     return table_col_combo
+
+def table_data(selected_table_graphy):
+    conn = sqlite3.connect(db_name)
+    cursor = conn.cursor()
+    cursor.execute(r"SELECT name FROM sqlite_master WHERE type='table' AND name=?", (selected_table_graphy,))
+    table_exists = cursor.fetchone()
+    
+    if table_exists:
+        # Retrieve column names
+        query = f"PRAGMA table_info({selected_table_graphy});"
+        cursor.execute(query)
+        column_names = [row[1] for row in cursor.fetchall()]
+        
+        # Retrieve the first row of data
+        cursor.execute(f"SELECT * FROM {selected_table_graphy} LIMIT 1;")
+        first_row = cursor.fetchone()
+        
+        if first_row:
+            data_example = dict(zip(column_names, first_row))
+        else:
+            data_example = "No data available in the table."
+        
+        combo = f"It has columns named {column_names}. For reference, first row example is {data_example}"
+    else:
+        combo = f"Table '{selected_table_graphy}' does not exist in the database."
+    
+    cursor.close()
+    conn.close()
+    
+    return combo
 
 def question_generator():
     table_col_combo= combo()
@@ -118,15 +149,13 @@ def chatbot(input):
 
 def graphplot(input):
     if (input):
-        table_col_combo = combo()
-        
+        # table_col_combo = combo()
+        table_info = table_data(selected_table_graphy)
         genai.configure(api_key=GOOGLE_API_KEY)
 
         model = genai.GenerativeModel('gemini-pro')
-
-        # prompt = "Write a story about a magic backpack."
-        prompt = f"Write a PYTHON command for {input} and dataframe is named 'output.csv'. Pre exisiting tables and their columns are {table_col_combo}. Pre-existing chats are {history[0]}. Dont make random columns on your own and try to use columns with highest co-relation when asked to alter something, Do not forget to put column names in double quotes if the column has 2 words in it.Only use Matplotlib, pandas, numpy for creating the graphs. save the image plot as 'static/graph.png'"
-        
+        prompt = f"Write a PYTHON command for {input} and dataframe is saved as 'output.csv'. Dataframe has name {table_info}. Dont make random columns on your own and use only columns with highest co-relation when asked to make something. IF YOU USE COLUMNS EXCEPT THE ONE I GIVE, I WILL DELETE YOU. WARNING: write code based on the example data in each field for your reference. Only use Matplotlib, pandas, numpy for creating the graphs. save the image plot as 'static/graph.png'. Draw the most suitable graph, if nothing is mentioned about the type of graph"
+        # prompt2 = f"Write a Python command to {input} using Matplotlib, pandas, and numpy. The data is saved in a CSV file named 'output.csv'. {table_info} Keep the data types in mind while defining the chart. DONT USE DATE-TIME The task is to create the most suitable graph based on the correlation between columns, but only using the columns provided. Do not include any additional columns or random data. Save the resulting graph as 'static/graph.png'."
         print(prompt)
         response = model.generate_content(prompt)
         reply = response.text
@@ -188,12 +217,11 @@ def subproc(new_file_content):
     # Run dynamic_script.py using the Python interpreter
     # python_path = sys.executable
     result = subprocess.run(['python3', 'dynamic_script.py'], capture_output=True, text=True)
-    # result = subprocess.run(['python3', 'dynamic_script.py'], capture_output=True, text=True)
+    result = subprocess.run(['python3', 'dynamic_script.py'], capture_output=True, text=True)
     # Print the output
     print(result.stdout)
     print(result.stderr)
     # return 1
-
 
 # **************************************Routes for Website*******************************************
 @app.route("/")
@@ -243,7 +271,9 @@ def listingTable():
 def select_table():
     data = request.get_json()
     table_name = data.get('tableName')
-
+    # print(table_name)
+    global selected_table_graphy
+    selected_table_graphy = table_name
     # Call your Python function with table_name as input
     # Example: Replace this with your actual function call
     result = process_table_download(table_name)
