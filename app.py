@@ -14,6 +14,7 @@ import subprocess
 # load_dotenv()
 # GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
 # Load google api key
+
 app = Flask(__name__)
 CORS(app)
 db_name = "mydatabase.db"
@@ -95,7 +96,7 @@ def table_data(selected_table_graphy):
 def question_generator():
     table_col_combo= combo()
     genai.configure(api_key=GOOGLE_API_KEY)
-    model = genai.GenerativeModel('gemini-pro')
+    model = genai.GenerativeModel('gemini-1.5-flash')
     prompt = f"Write 10-15 Natural language questions to ask related to the tables {table_col_combo}. Pre exisiting tables and their columns are {table_col_combo}.Dont make random columns on your own. Just write the lines no extra text"
     response = model.generate_content(prompt)
     reply = response.text
@@ -300,7 +301,7 @@ def upload():
         return 'No selected file'
     image = Image.open(BytesIO(file.read()))
     genai.configure(api_key=GOOGLE_API_KEY)
-    imgmodel = genai.GenerativeModel('gemini-pro-vision')
+    imgmodel = genai.GenerativeModel('gemini-1.5-flash')
     # print(imgmodel)
     print(f"Write an SQLite command to add the table heads along with the input data present in the image. Dont make random columns on your own. You are warned : Never compromise the SQL syntax according to the input")
     response = imgmodel.generate_content([f"Write an SQLite command in code blocks like ```sql ........ ``` to add the table heads along with the input data present in the image. Dont make random columns on your own. Dont give table names from the list : {table_col_combo}. You are warned : Never compromise the SQL syntax according to the input", image], stream=True)
