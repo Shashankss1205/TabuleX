@@ -14,7 +14,6 @@ import subprocess
 # load_dotenv()
 # GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
 # Load google api key
-
 app = Flask(__name__)
 CORS(app)
 db_name = "mydatabase.db"
@@ -26,7 +25,7 @@ images = [
     {"url": "./static/charts/line_chart.png", "caption": "Line Chart", "description": "Show trends over time with connected data points."},
     {"url": "./static/charts/donut_chart.png", "caption": "Donut Chart", "description": "Represent proportions of each category as slices of a circle."},
     {"url": "./static/charts/scatterplot.png", "caption": "Scatterplot", "description": "Display relationships between two variables on a two-dimensional plane."},
-    {"url": "./static/charts/area_chart.png", "caption": "Area Chart", "description": "Show volume or magnitude of data over time by filling the area between the line and X-axis."},
+    {"url": "./static/charts/area_chart.png", "caption": "Area Chart", "description": "Show data magnitude over time by filling the area between the line and X-axis."},
     {"url": "./static/charts/bubble_chart.png", "caption": "Bubble Chart", "description": "Display relationships between three variables using bubble sizes."},
     {"url": "./static/charts/histogram.png", "caption": "Histogram", "description": "Show data distribution across equal intervals."},
     {"url": "./static/charts/heatmap.png", "caption": "Heatmap", "description": "Display relationships between two variables using color intensity in a matrix."},
@@ -216,8 +215,8 @@ def subproc(new_file_content):
 
     # Run dynamic_script.py using the Python interpreter
     # python_path = sys.executable
-    result = subprocess.run(['python3', 'dynamic_script.py'], capture_output=True, text=True)
-    result = subprocess.run(['python3', 'dynamic_script.py'], capture_output=True, text=True)
+    result = subprocess.run(['python', 'dynamic_script.py'], capture_output=True, text=True)
+    result = subprocess.run(['python', 'dynamic_script.py'], capture_output=True, text=True)
     # Print the output
     print(result.stdout)
     print(result.stderr)

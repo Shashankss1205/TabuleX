@@ -106,7 +106,6 @@
       </div>
     </nav>
     <hr />
-
     <div class="card-header msg_head">
       <div class="d-flex bd-highlight maindiv">
         <div class="img_cont">
@@ -118,7 +117,9 @@
             <h3>Graph Plotter</h3>
             <p>You Can Now Draw Graphs!!</p>
           </div>
-
+          <br>
+          <br>
+          <br>
           <div>
             <button type="button" class="btn btn-danger add_image">
               <i class="fa fa-upload"></i> Upload Table Image
@@ -192,9 +193,6 @@
                   <button id="stopBtn" style="display: none">
                     <i class="fas fa-stop btn_css"></i>
                   </button>
-                  <!-- <button type="submit" id="send" class="btn btn-primary">
-                    Send
-                  </button> -->
                   <button
                         type="submit"
                         id="send"
@@ -231,6 +229,7 @@
                   <div class="image-item">
                     <div class="image-container">
                       <img src="{{ image.url }}" alt="{{ image.caption }}" class="img-fluid" style="height: 100px;">
+                      <br>
                       <button
                   class="copy-btn"
                   onclick="copyToClipboard('Draw a {{ image.caption }} for the following table.')"
@@ -253,59 +252,6 @@
         
       </div>
     </div>
-    <!-- <div class="container mt-5">
-      <div class="row justify-content-center">
-        <div class="col-md-8">
-          <form id="graphinput" class="input-group">
-            <button
-              type="button"
-              class="btn btn-primary"
-              id="select_table"
-              data-toggle="modal"
-              data-target="#selectTableModal"
-            >
-              Select Table
-            </button>
-            <input
-              type="text"
-              id="text"
-              name="msg"
-              placeholder="Select a Table & Ask a Question..."
-              autocomplete="off"
-              class="form-control"
-            />
-            <div class="input-group-append">
-              <button id="recordBtn">
-                <i class="fas fa-microphone btn_css"></i>
-              </button>
-              <button id="stopBtn" style="display: none">
-                <i class="fas fa-stop btn_css"></i>
-              </button>
-              <button
-                    type="submit"
-                    id="send"
-                    class="input-group-text send_btn"
-                  >
-                    <i class="fas fa-location-arrow"></i>
-                  </button>
-            </div>
-          </form>
-        </div>
-      </div>
-      <div class="row justify-content-center mt-3">
-        <div class="col-md-8 text-center">
-          <img id="graphImage" src="../static/graph.png" class="img-fluid" />
-          <br />
-          <br />
-          <a
-            href="{{ url_for('Download_Graph') }}"
-            class="btn btn-danger"
-            style="color: black"
-            ><b>Download the Plot</b></a
-          >
-        </div>
-      </div>
-    </div> -->
 
     <div
       id="targetElement"
@@ -322,14 +268,6 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="tableModalLabel">Tables</h5>
-            <!-- <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button> -->
           </div>
           <div class="modal-body">
             <div id="table_modal_body">
