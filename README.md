@@ -1,3 +1,7 @@
+## Deployed Link
+🔗 [https://chatbot-ypewq27giq-et.a.run.app/](https://chatbot-ypewq27giq-et.a.run.app/)
+
+
 ## Inspiration
 Tabluar data analysis is a crucial need in various time when we need to deal with a large amount of data.  I have built the tool due to professional needs, personal interest in data analysis, recognizing market demand, desire for innovation, educational purposes, problem-solving drive, efficiency concerns.
 
